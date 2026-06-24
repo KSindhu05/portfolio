@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-blue: #00f3ff;
+  --color-neon-purple: #b900ff;
+  --color-dark-space: #03000a;
+  
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+
+body {
+  margin: 0;
+  background-color: #03000a;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+}
+
+/* Scanner beam overlay animation */
+@keyframes scanner {
+  0% {
+    top: -5%;
+  }
+  50% {
+    top: 105%;
+  }
+  100% {
+    top: -5%;
+  }
+}
+
+/* Dynamic text gradient loop */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
