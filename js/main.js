@@ -16,15 +16,16 @@
     initNavbar();
     initTypewriter();
     initScrollReveal();
-    initSkillOrbs();
-    initSkillTabs();
+    initSkillsGalaxy();
+    initNeuralCanvas();
+    initSkillsParallax();
+    initSkillCardInteractions();
     initProjectTilt();
     initMouseLight();
     initContactForm();
     initSmoothScrollWithAnimations();
     initSectionClickAnimations();
     initCardMagneticEffect();
-    initCertificateViewer();
     initParallaxElements();
     // New features
     initScrollProgress();
@@ -450,56 +451,267 @@
     reveals.forEach((el) => observer.observe(el));
   }
 
-  /* ===== SKILL ORBS — SVG Ring Animation ===== */
-  function initSkillOrbs() {
-    const orbFills = document.querySelectorAll('.skill-orb-fill');
-    if (!orbFills.length) return;
+  /* ===== NEW SKILLS GALAXY — AI COMMAND CENTER ===== */
+  function initSkillsGalaxy() {
+    const cosmos = document.getElementById('skills-cosmos');
+    const nodes = document.querySelectorAll('.skill-node');
+    if (!cosmos || !nodes.length) return;
 
-    const circumference = 2 * Math.PI * 44; // r=44
+    function positionNodes() {
+      const isMobile = window.innerWidth <= 900;
+      
+      nodes.forEach((node) => {
+        if (isMobile) {
+          // Clear custom positioning for grid fallback
+          node.style.left = '';
+          node.style.top = '';
+          node.style.transform = '';
+          return;
+        }
 
+        const orbit = node.getAttribute('data-orbit');
+        const index = parseInt(node.getAttribute('data-index')) || 0;
+        
+        // Calculate total items in this orbit
+        const total = Array.from(nodes).filter(n => n.getAttribute('data-orbit') === orbit).length;
+        
+        // Determine radius for inner/outer orbits
+        const radius = orbit === 'inner' ? 190 : 330; // Matches CSS paths
+        
+        // Calculate angle (spread evenly around the circle)
+        // Offset inner and outer angles for a more dynamic galaxy layout
+        const angleOffset = orbit === 'inner' ? 0 : Math.PI / total;
+        const angle = (index / total) * 2 * Math.PI + angleOffset;
+        
+        // Trigonometric positioning relative to cosmos center (50%, 50%)
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        
+        // Position card centered on (x, y) coordinates
+        node.style.left = `calc(50% + ${x}px - 87.5px)`; // 87.5px is half of 175px card width
+        node.style.top = `calc(50% + ${y}px - 50px)`;    // Approximate half of card height
+        
+        // Store base coordinate variables for tilt/float reference
+        node.setAttribute('data-x', x);
+        node.setAttribute('data-y', y);
+        node.style.transform = `translate3d(0, 0, 0)`;
+      });
+    }
+
+    positionNodes();
+    window.addEventListener('resize', positionNodes);
+
+    // Staggered entrance animations when entering viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const circle = entry.target;
-            const percent = parseInt(circle.getAttribute('data-percent')) || 0;
-            const offset = circumference - (percent / 100) * circumference;
-            circle.style.strokeDashoffset = offset;
-            circle.classList.add('animated');
-            observer.unobserve(circle);
+            nodes.forEach((node, idx) => {
+              node.style.opacity = '0';
+              node.style.transform = 'scale(0.8) translate3d(0, 50px, 0)';
+              node.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+              
+              setTimeout(() => {
+                node.style.opacity = '1';
+                node.style.transform = 'scale(1) translate3d(0, 0, 0)';
+                // Re-apply transitions for mouse hover after entrance finishes
+                setTimeout(() => {
+                  node.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease';
+                }, 600);
+              }, idx * 100);
+            });
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.15 }
     );
-
-    orbFills.forEach((fill) => observer.observe(fill));
+    observer.observe(cosmos);
   }
 
-  /* ===== SKILL TABS — Filter by Category ===== */
-  function initSkillTabs() {
-    const tabs = document.querySelectorAll('.skill-tab');
-    const orbs = document.querySelectorAll('.skill-orb');
-    if (!tabs.length || !orbs.length) return;
+  /* ===== NEURAL CANVAS BACKGROUND ===== */
+  function initNeuralCanvas() {
+    const canvas = document.getElementById('neural-canvas');
+    if (!canvas) return;
 
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        // Update active tab
-        tabs.forEach((t) => t.classList.remove('active'));
-        tab.classList.add('active');
+    const ctx = canvas.getContext('2d');
+    let animationId;
+    let particles = [];
+    
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-        const category = tab.getAttribute('data-category');
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 2 + 1;
+      }
 
-        orbs.forEach((orb) => {
-          if (category === 'all' || orb.getAttribute('data-category') === category) {
-            orb.classList.remove('hidden');
-          } else {
-            orb.classList.add('hidden');
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Bounce boundaries
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 15000));
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    initParticles();
+    window.addEventListener('resize', initParticles);
+
+    function drawConnections() {
+      const maxDistance = 120;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDistance) {
+            const alpha = (1 - dist / maxDistance) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
           }
-        });
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
       });
+      
+      drawConnections();
+      animationId = requestAnimationFrame(animate);
+    }
+
+    // Only run if user doesn't prefer reduced motion
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      animate();
+    }
+  }
+
+  /* ===== SKILLS PARALLAX ===== */
+  function initSkillsParallax() {
+    const cosmos = document.getElementById('skills-cosmos');
+    if (!cosmos || window.innerWidth <= 900) return;
+
+    cosmos.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 900) return;
+      const rect = cosmos.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      // Calculate rotation ratios
+      const rotX = (-y / rect.height) * 12;
+      const rotY = (x / rect.width) * 12;
+      
+      // Apply slight perspective rotate to the entire container
+      cosmos.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    });
+
+    cosmos.addEventListener('mouseleave', () => {
+      cosmos.style.transform = 'rotateX(0) rotateY(0)';
     });
   }
+
+  /* ===== SKILL CARD INTERACTIONS & BEAM CONNECTIONS ===== */
+  function initSkillCardInteractions() {
+    const nodes = document.querySelectorAll('.skill-node');
+    const beam = document.getElementById('beam-line');
+    const core = document.getElementById('ai-core');
+    const cosmos = document.getElementById('skills-cosmos');
+    
+    if (!nodes.length || !beam || !core || !cosmos) return;
+
+    nodes.forEach((node) => {
+      // 3D Card Tilt
+      node.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 900) return;
+        const rect = node.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Tilt amount: max 15 degrees
+        const rotX = ((y - centerY) / centerY) * -15;
+        const rotY = ((x - centerX) / centerX) * 15;
+        
+        // Lift card and rotate
+        node.style.transform = `translateZ(30px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.06)`;
+        
+        // Update connection beam endpoint dynamically as card tilts
+        updateBeam(node);
+      });
+
+      node.addEventListener('mouseenter', () => {
+        const color = node.style.getPropertyValue('--node-color') || 'var(--accent-blue)';
+        document.documentElement.style.setProperty('--beam-color', color);
+        beam.classList.add('active');
+        updateBeam(node);
+      });
+
+      node.addEventListener('mouseleave', () => {
+        node.style.transform = 'translateZ(0) rotateX(0) rotateY(0) scale(1)';
+        beam.classList.remove('active');
+      });
+    });
+
+    function updateBeam(node) {
+      if (window.innerWidth <= 900) return;
+      
+      const cosmosRect = cosmos.getBoundingClientRect();
+      const nodeRect = node.getBoundingClientRect();
+      const coreRect = core.getBoundingClientRect();
+      
+      // Node center relative to cosmos
+      const nodeX = (nodeRect.left + nodeRect.width / 2) - cosmosRect.left;
+      const nodeY = (nodeRect.top + nodeRect.height / 2) - cosmosRect.top;
+      
+      // Core center relative to cosmos
+      const coreX = (coreRect.left + coreRect.width / 2) - cosmosRect.left;
+      const coreY = (coreRect.top + coreRect.height / 2) - cosmosRect.top;
+      
+      beam.setAttribute('x1', `${coreX}px`);
+      beam.setAttribute('y1', `${coreY}px`);
+      beam.setAttribute('x2', `${nodeX}px`);
+      beam.setAttribute('y2', `${nodeY}px`);
+    }
+  }
+
 
 
 
@@ -624,9 +836,9 @@
       '.section-title',
       '.section-subtitle',
       '.glass-card',
-      '.skill-category',
-      '.skill-orb',
-      '.skill-tabs',
+      '.skill-node',
+      '.skills-cosmos',
+      '.ai-core',
       '.spoken-lang-card',
       '.coding-stat-card',
       '.heatmap-container',
@@ -778,80 +990,5 @@
     });
   }
 
-  /* ===== CERTIFICATE VIEWER ===== */
-  function initCertificateViewer() {
-    const modal = document.getElementById('cert-modal');
-    if (!modal) return;
-
-    const modalBody = modal.querySelector('.cert-modal-body');
-    const closeBtn = modal.querySelector('.cert-modal-close');
-    const viewButtons = document.querySelectorAll('.view-cert-btn');
-
-    const certData = {
-      'cert-ai': {
-        issuer: 'IBM SkillsBuild',
-        title: 'Artificial Intelligence Fundamentals',
-        image: 'assets/cert_ai_fundamentals.png',
-        verifyUrl: 'https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb'
-      },
-      'cert-threat': {
-        issuer: 'Infosys Springboard',
-        title: 'Threat Modeling',
-        image: 'assets/cert_threat_modeling.png',
-        verifyUrl: 'https://verify.onwingspan.com'
-      },
-      'cert-comm': {
-        issuer: 'IBM SkillsBuild',
-        title: 'Customer Engagement: Communication and Personality Dynamics',
-        image: 'assets/cert_customer_comm.png',
-        verifyUrl: 'https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca'
-      },
-      'cert-solving': {
-        issuer: 'IBM SkillsBuild',
-        title: 'Customer Engagement: Problem Solving and Process Controls',
-        image: 'assets/cert_customer_solving.png',
-        verifyUrl: 'https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb'
-      }
-    };
-
-    viewButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const certId = btn.getAttribute('data-cert');
-        const data = certData[certId];
-        if (!data) return;
-
-        // Render Certificate Image and Verification details
-        modalBody.innerHTML = `
-          <div class="image-cert-viewer" style="text-align: center;">
-            <img src="${data.image}" alt="${data.title} Certificate" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.5); margin-bottom: 20px;">
-            <div style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 10px;">
-              <span style="color: var(--text-primary); font-size: 0.95rem; font-weight: 500;">${data.title} — ${data.issuer}</span>
-              <a href="${data.verifyUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.85rem; width: auto; display: inline-flex;">
-                <i class="fas fa-external-link-alt"></i> Verify Credential
-              </a>
-            </div>
-          </div>
-        `;
-
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    const closeModal = () => {
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
-    };
-
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('active')) {
-        closeModal();
-      }
-    });
-  }
+  /* Certificate viewer functionality has been moved to a self-contained inline script in index.html for maximum reliability and to bypass cache/init issues. */
 })();

@@ -3,6 +3,23 @@
 
 <head>
   <meta charset="UTF-8">
+  <script>
+    // Global error listener to help debug on user's screen
+    window.onerror = function(msg, url, line, col, err) {
+      alert("JavaScript Error detected:\n\nMessage: " + msg + "\nFile: " + url + "\nLine: " + line + ":" + col);
+      return false;
+    };
+
+    // Auto cache-buster redirect to ensure the browser loads the latest index.html
+    (function() {
+      var currentVersion = 'v9';
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('v') !== currentVersion) {
+        urlParams.set('v', currentVersion);
+        window.location.search = urlParams.toString();
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>K Sindhu | AI/ML Engineering Student &amp; Developer</title>
   <meta name="description"
@@ -26,7 +43,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=v9">
 </head>
 
 <body>
@@ -100,7 +117,7 @@
       <div class="hero-avatar-wrapper reveal-left">
         <div class="hero-avatar-container">
           <div class="avatar-glow"></div>
-          <img src="assets/profile.png" alt="K Sindhu — AI/ML Developer" class="hero-avatar">
+          <img src="assets/profile.png" alt="K Sindhu - AI/ML Developer" class="hero-avatar" oncontextmenu="return false;" draggable="false" style="pointer-events: none; user-select: none; -webkit-user-drag: none;">
           <div class="avatar-ring avatar-ring-1"></div>
           <div class="avatar-ring avatar-ring-2"></div>
           <div class="avatar-ring avatar-ring-3"></div>
@@ -256,496 +273,190 @@
         </div>
       </div>
     </div>
+  </section>
     <!-- ============================================================
-       SKILLS SECTION — IMMERSIVE SKILL CONSTELLATION
+       SKILLS SECTION — AI COMMAND CENTER GALAXY
        ============================================================ -->
     <section id="skills">
+      <!-- Neural Network Canvas Background -->
+      <canvas id="neural-canvas"></canvas>
+
       <div class="container">
         <h2 class="section-title reveal">
-          Skills & <span class="gradient-text">Expertise</span>
+          My Technical <span class="gradient-text">Arsenal</span>
         </h2>
         <p class="section-subtitle reveal">
-          A constellation of skills I've developed — hover over each orb to explore proficiency levels and experience.
+          Transforming ideas into intelligent digital experiences through modern technologies, creativity, and continuous learning.
         </p>
 
-        <!-- Category Filter Tabs -->
-        <div class="skill-tabs reveal" id="skill-tabs">
-          <button class="skill-tab active" data-category="all">
-            <i class="fas fa-th"></i> All
-          </button>
-          <button class="skill-tab" data-category="languages">
-            <i class="fas fa-code"></i> Languages
-          </button>
-          <button class="skill-tab" data-category="frameworks">
-            <i class="fas fa-layer-group"></i> Frameworks & Tools
-          </button>
-          <button class="skill-tab" data-category="concepts">
-            <i class="fas fa-brain"></i> Core Concepts
-          </button>
-        </div>
+        <!-- Skills Galaxy Orbital System -->
+        <div class="skills-cosmos" id="skills-cosmos">
 
-        <!-- Skill Constellation -->
-        <div class="skill-constellation reveal" id="skill-constellation">
+          <!-- AI Energy Core -->
+          <div class="ai-core" id="ai-core">
+            <div class="core-orb"></div>
+            <div class="core-pulse"></div>
+            <div class="core-pulse core-pulse-2"></div>
+            <div class="core-ring core-ring-1"></div>
+            <div class="core-ring core-ring-2"></div>
+            <div class="core-ring core-ring-3"></div>
+            <div class="core-label">AI<br>Core</div>
+          </div>
 
-          <!-- Programming Languages -->
-          <div class="skill-orb" data-category="languages" data-level="85"
-            style="--orb-color: #3776AB; --orb-delay: 0s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-python"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="85" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Python</div>
-            <div class="skill-orb-level">85%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Python</strong>
-              <span>AI/ML, Flask, Data Science</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 85%"></div>
-              </div>
+          <!-- Orbit Paths (visual guides) -->
+          <div class="orbit-path orbit-path-inner"></div>
+          <div class="orbit-path orbit-path-outer"></div>
+
+          <!-- Light Beam Container (for hover connections) -->
+          <svg class="skill-beams" id="skill-beams" aria-hidden="true">
+            <line class="beam-line" id="beam-line" x1="50%" y1="50%" x2="50%" y2="50%"/>
+          </svg>
+
+          <!-- ===== INNER ORBIT — Programming Languages ===== -->
+          <div class="skill-node" data-orbit="inner" data-index="0" data-level="advanced" style="--node-color: #3776AB; --float-delay: 0s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-python"></i></div>
+              <h4 class="node-name">Python</h4>
+              <p class="node-desc">Building intelligent automation, AI solutions, and backend applications.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="languages" data-level="75"
-            style="--orb-color: #ED8B00; --orb-delay: 0.1s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-java"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="75" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Java</div>
-            <div class="skill-orb-level">75%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Java</strong>
-              <span>OOP, Spring Boot, Android</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 75%"></div>
-              </div>
+          <div class="skill-node" data-orbit="inner" data-index="1" data-level="advanced" style="--node-color: #ED8B00; --float-delay: 0.5s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-java"></i></div>
+              <h4 class="node-name">Java</h4>
+              <p class="node-desc">Developing robust object-oriented applications with clean architecture.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="languages" data-level="80"
-            style="--orb-color: #F7DF1E; --orb-delay: 0.2s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-js-square"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="80" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">JavaScript</div>
-            <div class="skill-orb-level">80%</div>
-            <div class="skill-orb-tooltip">
-              <strong>JavaScript</strong>
-              <span>ES6+, DOM, Async, APIs</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 80%"></div>
-              </div>
+          <div class="skill-node" data-orbit="inner" data-index="2" data-level="advanced" style="--node-color: #F7DF1E; --float-delay: 1s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-js-square"></i></div>
+              <h4 class="node-name">JavaScript</h4>
+              <p class="node-desc">Creating dynamic and interactive web experiences.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="languages" data-level="90"
-            style="--orb-color: #E34F26; --orb-delay: 0.3s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-html5"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="90" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">HTML5</div>
-            <div class="skill-orb-level">90%</div>
-            <div class="skill-orb-tooltip">
-              <strong>HTML5</strong>
-              <span>Semantic, Accessibility, SEO</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 90%"></div>
-              </div>
+          <div class="skill-node" data-orbit="inner" data-index="3" data-level="advanced" style="--node-color: #E34F26; --float-delay: 1.5s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-html5"></i></div>
+              <h4 class="node-name">HTML5</h4>
+              <p class="node-desc">Crafting semantic, accessible, and SEO-optimized web structures.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="languages" data-level="88"
-            style="--orb-color: #1572B6; --orb-delay: 0.4s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-css3-alt"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="88" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">CSS3</div>
-            <div class="skill-orb-level">88%</div>
-            <div class="skill-orb-tooltip">
-              <strong>CSS3</strong>
-              <span>Animations, Grid, Flexbox</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 88%"></div>
-              </div>
+          <div class="skill-node" data-orbit="inner" data-index="4" data-level="advanced" style="--node-color: #1572B6; --float-delay: 2s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-css3-alt"></i></div>
+              <h4 class="node-name">CSS3</h4>
+              <p class="node-desc">Designing beautiful, responsive layouts with modern techniques.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="languages" data-level="70"
-            style="--orb-color: #0074D9; --orb-delay: 0.5s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-database"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="70" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">SQL</div>
-            <div class="skill-orb-level">70%</div>
-            <div class="skill-orb-tooltip">
-              <strong>SQL</strong>
-              <span>MySQL, Queries, Joins</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 70%"></div>
-              </div>
+          <div class="skill-node" data-orbit="inner" data-index="5" data-level="intermediate" style="--node-color: #336791; --float-delay: 2.5s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fas fa-database"></i></div>
+              <h4 class="node-name">SQL</h4>
+              <p class="node-desc">Managing and querying relational databases efficiently.</p>
+              <span class="node-badge">Intermediate</span>
             </div>
           </div>
 
-          <!-- Frameworks & Tools -->
-          <div class="skill-orb" data-category="frameworks" data-level="72"
-            style="--orb-color: #61DAFB; --orb-delay: 0.6s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-react"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="72" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">React</div>
-            <div class="skill-orb-level">72%</div>
-            <div class="skill-orb-tooltip">
-              <strong>React</strong>
-              <span>Components, Hooks, State</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 72%"></div>
-              </div>
+          <!-- ===== OUTER ORBIT — Frameworks & Tools + Learning ===== -->
+          <div class="skill-node" data-orbit="outer" data-index="0" data-level="intermediate" style="--node-color: #61DAFB; --float-delay: 0.3s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-react"></i></div>
+              <h4 class="node-name">React</h4>
+              <p class="node-desc">Building scalable, fast, and responsive user interfaces.</p>
+              <span class="node-badge">Intermediate</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="frameworks" data-level="75"
-            style="--orb-color: #47A248; --orb-delay: 0.7s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-leaf"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="75" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">MongoDB</div>
-            <div class="skill-orb-level">75%</div>
-            <div class="skill-orb-tooltip">
-              <strong>MongoDB</strong>
-              <span>NoSQL, CRUD, Aggregation</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 75%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="1" data-level="intermediate" style="--node-color: #06B6D4; --float-delay: 0.8s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fas fa-wind"></i></div>
+              <h4 class="node-name">Tailwind CSS</h4>
+              <p class="node-desc">Designing elegant, modern, and responsive layouts.</p>
+              <span class="node-badge">Intermediate</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="frameworks" data-level="78"
-            style="--orb-color: #F05033; --orb-delay: 0.8s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-git-alt"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="78" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Git</div>
-            <div class="skill-orb-level">78%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Git</strong>
-              <span>Version Control, GitHub</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 78%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="2" data-level="advanced" style="--node-color: #F05033; --float-delay: 1.3s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-git-alt"></i></div>
+              <h4 class="node-name">Git</h4>
+              <p class="node-desc">Version control and collaborative software development.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="frameworks" data-level="70"
-            style="--orb-color: #2496ED; --orb-delay: 0.9s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fab fa-docker"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="70" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Docker</div>
-            <div class="skill-orb-level">70%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Docker</strong>
-              <span>Containers, Images, Compose</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 70%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="3" data-level="advanced" style="--node-color: #F1F1F1; --float-delay: 1.8s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fab fa-github"></i></div>
+              <h4 class="node-name">GitHub</h4>
+              <p class="node-desc">Managing projects, repositories, and team collaboration.</p>
+              <span class="node-badge">Advanced</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="frameworks" data-level="65"
-            style="--orb-color: #326CE5; --orb-delay: 1.0s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-dharmachakra"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="65" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Kubernetes</div>
-            <div class="skill-orb-level">65%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Kubernetes</strong>
-              <span>Orchestration, Pods, Services</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 65%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="4" data-level="learning" style="--node-color: #8B5CF6; --float-delay: 2.3s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fas fa-brain"></i></div>
+              <h4 class="node-name">Machine Learning</h4>
+              <p class="node-desc">Currently exploring predictive models and intelligent systems.</p>
+              <span class="node-badge badge-learning">Currently Learning</span>
             </div>
           </div>
 
-          <!-- Core Concepts -->
-          <div class="skill-orb" data-category="concepts" data-level="85"
-            style="--orb-color: #8B5CF6; --orb-delay: 1.1s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-cubes"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="85" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">OOP</div>
-            <div class="skill-orb-level">85%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Object-Oriented Programming</strong>
-              <span>Encapsulation, Inheritance, Polymorphism</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 85%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="5" data-level="learning" style="--node-color: #EC4899; --float-delay: 2.8s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fas fa-robot"></i></div>
+              <h4 class="node-name">AI</h4>
+              <p class="node-desc">Learning AI concepts for building smart applications.</p>
+              <span class="node-badge badge-learning">Currently Learning</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="concepts" data-level="80"
-            style="--orb-color: #EC4899; --orb-delay: 1.2s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-shield-alt"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="80" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Threat Modeling</div>
-            <div class="skill-orb-level">80%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Threat Modeling</strong>
-              <span>Security Analysis, Risk Assessment</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 80%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="6" data-level="learning" style="--node-color: #22C55E; --float-delay: 3.3s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fas fa-sitemap"></i></div>
+              <h4 class="node-name">DSA</h4>
+              <p class="node-desc">Strengthening problem-solving and coding efficiency.</p>
+              <span class="node-badge badge-learning">Currently Learning</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="concepts" data-level="90"
-            style="--orb-color: #22C55E; --orb-delay: 1.3s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-lightbulb"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="90" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">Problem Solving</div>
-            <div class="skill-orb-level">90%</div>
-            <div class="skill-orb-tooltip">
-              <strong>Problem Solving</strong>
-              <span>DSA, Logic, Critical Thinking</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 90%"></div>
-              </div>
+          <div class="skill-node" data-orbit="outer" data-index="7" data-level="learning" style="--node-color: #F59E0B; --float-delay: 3.8s;">
+            <div class="node-glow"></div>
+            <div class="node-inner">
+              <div class="node-icon"><i class="fas fa-plug"></i></div>
+              <h4 class="node-name">REST APIs</h4>
+              <p class="node-desc">Building and integrating scalable backend services.</p>
+              <span class="node-badge badge-learning">Currently Learning</span>
             </div>
           </div>
 
-          <div class="skill-orb" data-category="concepts" data-level="82"
-            style="--orb-color: #06B6D4; --orb-delay: 1.4s;">
-            <div class="skill-orb-inner">
-              <div class="skill-orb-ring"></div>
-              <div class="skill-orb-glow"></div>
-              <div class="skill-orb-icon"><i class="fas fa-project-diagram"></i></div>
-              <svg class="skill-orb-progress" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="44" class="skill-orb-track" />
-                <circle cx="50" cy="50" r="44" class="skill-orb-fill" data-percent="82" />
-              </svg>
-            </div>
-            <div class="skill-orb-label">System Design</div>
-            <div class="skill-orb-level">82%</div>
-            <div class="skill-orb-tooltip">
-              <strong>System Design</strong>
-              <span>Architecture, Scalability, Patterns</span>
-              <div class="skill-orb-tooltip-bar">
-                <div style="width: 82%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Spoken Languages -->
-        <div class="spoken-languages reveal">
-          <h3 class="spoken-languages-title">
-            <i class="fas fa-language"></i> Languages I Speak
-          </h3>
-          <div class="spoken-languages-grid">
-            <div class="spoken-lang-card">
-              <div class="spoken-lang-flag blue-glow">
-                <i class="fas fa-globe-americas"></i>
-              </div>
-              <div class="spoken-lang-info">
-                <h4>English</h4>
-                <span>Professional</span>
-              </div>
-              <div class="spoken-lang-dots">
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot"></span>
-              </div>
-            </div>
-            <div class="spoken-lang-card">
-              <div class="spoken-lang-flag purple-glow">
-                <i class="fas fa-language"></i>
-              </div>
-              <div class="spoken-lang-info">
-                <h4>Telugu</h4>
-                <span>Native</span>
-              </div>
-              <div class="spoken-lang-dots">
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-              </div>
-            </div>
-            <div class="spoken-lang-card">
-              <div class="spoken-lang-flag cyan-glow">
-                <i class="fas fa-comments"></i>
-              </div>
-              <div class="spoken-lang-info">
-                <h4>Kannada</h4>
-                <span>Fluent</span>
-              </div>
-              <div class="spoken-lang-dots">
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot"></span>
-              </div>
-            </div>
-            <div class="spoken-lang-card">
-              <div class="spoken-lang-flag blue-glow">
-                <i class="fas fa-globe-asia"></i>
-              </div>
-              <div class="spoken-lang-info">
-                <h4>Hindi</h4>
-                <span>Conversational</span>
-              </div>
-              <div class="spoken-lang-dots">
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot filled"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
-
-
-    <!-- ============================================================
-       TECH STACK — 3D FLOATING ICONS
-       ============================================================ -->
-    <section id="tech-stack">
-      <div class="container">
-        <h2 class="section-title reveal">
-          Tech <span class="gradient-text">Stack</span>
-        </h2>
-        <p class="section-subtitle reveal">
-          Tools and technologies I work with to bring ideas to life.
-        </p>
-
-        <div class="tech-grid reveal-stagger">
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-python"><i class="fab fa-python"></i></div>
-            <h4>Python</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-java"><i class="fab fa-java"></i></div>
-            <h4>Java</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-js"><i class="fab fa-js-square"></i></div>
-            <h4>JavaScript</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-html"><i class="fab fa-html5"></i></div>
-            <h4>HTML5</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-css"><i class="fab fa-css3-alt"></i></div>
-            <h4>CSS3</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-sql"><i class="fas fa-database"></i></div>
-            <h4>SQL</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-react"><i class="fab fa-react"></i></div>
-            <h4>React</h4>
-          </div>
-          <div class="glass-card tech-card">
-            <div class="tech-icon tech-git"><i class="fab fa-git-alt"></i></div>
-            <h4>Git</h4>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ============================================================
        EDUCATION TIMELINE
        ============================================================ -->
@@ -818,7 +529,7 @@
             <h3 class="cert-title">Artificial Intelligence Fundamentals</h3>
             <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Aug 01, 2025</p>
             <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-ai">
+              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-ai" onclick="openCertificateModal('cert-ai')">
                 <i class="fas fa-eye"></i> View Certificate
               </button>
               <a href="https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb" target="_blank"
@@ -839,7 +550,7 @@
             <h3 class="cert-title">Threat Modeling</h3>
             <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 11, 2025</p>
             <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-threat">
+              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-threat" onclick="openCertificateModal('cert-threat')">
                 <i class="fas fa-eye"></i> View Certificate
               </button>
               <a href="https://verify.onwingspan.com" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
@@ -859,7 +570,7 @@
             <h3 class="cert-title">Customer Engagement: Communication &amp; Personality Dynamics</h3>
             <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 31, 2025</p>
             <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-comm">
+              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-comm" onclick="openCertificateModal('cert-comm')">
                 <i class="fas fa-eye"></i> View Certificate
               </button>
               <a href="https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca" target="_blank"
@@ -880,7 +591,7 @@
             <h3 class="cert-title">Customer Engagement: Problem Solving &amp; Process Controls</h3>
             <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 31, 2025</p>
             <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-solving">
+              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-solving" onclick="openCertificateModal('cert-solving')">
                 <i class="fas fa-eye"></i> View Certificate
               </button>
               <a href="https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb" target="_blank"
@@ -1107,19 +818,105 @@
     </a>
 
     <!-- ===== CERTIFICATE MODAL ===== -->
-    <div id="cert-modal" class="cert-modal-overlay">
-      <div class="cert-modal-content glass-card">
-        <button class="cert-modal-close" aria-label="Close certificate viewer">&times;</button>
-        <div class="cert-modal-body">
-          <!-- Rendered certificate content will go here dynamically -->
-        </div>
+    <div id="cert-modal" class="cert-modal-overlay" style="display: none; z-index: 999999; opacity: 0; visibility: hidden;" onclick="if(event.target === this) closeCertificateModal()">
+      <div class="cert-modal-content" style="z-index: 1000000 !important; opacity: 1 !important; visibility: visible !important;">
+        <button class="cert-modal-close" onclick="closeCertificateModal()" aria-label="Close">&times;</button>
+        <div class="cert-modal-body" id="cert-modal-body"></div>
       </div>
     </div>
 
+    <script>
+      (function() {
+        var certData = {
+          'cert-ai': {
+            issuer: 'IBM SkillsBuild',
+            title: 'Artificial Intelligence Fundamentals',
+            image: 'assets/cert_ai_fundamentals.png',
+            verifyUrl: 'https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb'
+          },
+          'cert-threat': {
+            issuer: 'Infosys Springboard',
+            title: 'Threat Modeling',
+            image: 'assets/cert_threat_modeling.png',
+            verifyUrl: 'https://verify.onwingspan.com'
+          },
+          'cert-comm': {
+            issuer: 'IBM SkillsBuild',
+            title: 'Customer Engagement: Communication and Personality Dynamics',
+            image: 'assets/cert_customer_comm.png',
+            verifyUrl: 'https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca'
+          },
+          'cert-solving': {
+            issuer: 'IBM SkillsBuild',
+            title: 'Customer Engagement: Problem Solving and Process Controls',
+            image: 'assets/cert_customer_solving.png',
+            verifyUrl: 'https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb'
+          }
+        };
+
+        window.openCertificateModal = function(certId) {
+          var data = certData[certId];
+          if (!data) return;
+
+          var modal = document.getElementById('cert-modal');
+          var modalBody = document.getElementById('cert-modal-body');
+          if (!modal || !modalBody) return;
+
+          modalBody.innerHTML =
+            '<div style="text-align:center;">' +
+              '<img src="' + data.image + '" alt="' + data.title + ' Certificate" ' +
+                   'style="width:100%;max-height:68vh;object-fit:contain;border-radius:10px;' +
+                   'border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.5);margin-bottom:20px;">' +
+              '<div style="display:flex;gap:15px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px;">' +
+                '<span style="color:#fff;font-size:0.95rem;font-weight:500;">' + data.title + ' — ' + data.issuer + '</span>' +
+                '<a href="' + data.verifyUrl + '" target="_blank" rel="noopener" ' +
+                   'style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:0.85rem;' +
+                   'background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:8px;' +
+                   'text-decoration:none;font-weight:500;">' +
+                  '<i class="fas fa-external-link-alt"></i> Verify Credential' +
+                '</a>' +
+              '</div>' +
+            '</div>';
+
+          var content = modal.querySelector('.cert-modal-content');
+          if (content) {
+            content.style.transform = 'scale(1) translateY(0)';
+          }
+
+          modal.style.display = 'flex';
+          modal.style.opacity = '1';
+          modal.style.visibility = 'visible';
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        };
+
+        window.closeCertificateModal = function() {
+          var modal = document.getElementById('cert-modal');
+          if (!modal) return;
+          modal.classList.remove('active');
+          modal.style.display = 'none';
+          modal.style.opacity = '0';
+          modal.style.visibility = 'hidden';
+          document.body.style.overflow = '';
+
+          var content = modal.querySelector('.cert-modal-content');
+          if (content) {
+            content.style.transform = 'scale(0.9) translateY(20px)';
+          }
+        };
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            closeCertificateModal();
+          }
+        });
+      })();
+    </script>
+
     <!-- ===== SCRIPTS ===== -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/scene.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/scene.js?v=v9"></script>
+    <script src="js/main.js?v=v9"></script>
 
 </body>
 

@@ -103,19 +103,19 @@
 
   const wavePresets = [
     // Hero: calm gentle ocean
-    { speed: 0.6, amp: 2.5, freq: 0.08, turb: 1.0 },
+    { speed: 0.3, amp: 1.8, freq: 0.06, turb: 0.5 },
     // About: slightly more active
-    { speed: 0.7, amp: 3.0, freq: 0.09, turb: 1.3 },
+    { speed: 0.35, amp: 2.0, freq: 0.07, turb: 0.7 },
     // Skills: energetic, tighter waves
-    { speed: 0.9, amp: 3.5, freq: 0.11, turb: 1.5 },
+    { speed: 0.45, amp: 2.2, freq: 0.08, turb: 0.9 },
     // Education: deep slow swells
-    { speed: 0.4, amp: 4.0, freq: 0.06, turb: 0.8 },
+    { speed: 0.2, amp: 2.5, freq: 0.05, turb: 0.4 },
     // Certificates: playful ripples
-    { speed: 1.0, amp: 2.8, freq: 0.12, turb: 1.8 },
+    { speed: 0.5, amp: 1.9, freq: 0.09, turb: 1.0 },
     // Projects: dynamic, fast
-    { speed: 1.1, amp: 3.2, freq: 0.10, turb: 2.0 },
+    { speed: 0.55, amp: 2.1, freq: 0.07, turb: 1.2 },
     // Contact: serene and grand
-    { speed: 0.5, amp: 4.5, freq: 0.05, turb: 0.6 },
+    { speed: 0.25, amp: 2.8, freq: 0.04, turb: 0.3 },
   ];
 
   // ===========================================================
@@ -385,8 +385,8 @@
     mouse.sx += (mouse.x - mouse.sx) * 0.04;
     mouse.sy += (mouse.y - mouse.sy) * 0.04;
 
-    // Smooth scroll
-    smoothScroll += (scrollY - smoothScroll) * 0.06;
+    // Smooth scroll (slowed down from 0.03 to 0.015 for a gentler flow)
+    smoothScroll += (scrollY - smoothScroll) * 0.015;
 
     // ---- Scroll progress (0..1 over full page) ----
     const maxScroll = getMaxScroll();
@@ -414,11 +414,11 @@
     const targetFreq = lerp(wA.freq, wB.freq, easedT);
     const targetTurb = lerp(wA.turb, wB.turb, easedT);
 
-    // Smooth approach
-    sWaveSpeed += (targetSpeed - sWaveSpeed) * 0.05;
-    sWaveAmp += (targetAmp - sWaveAmp) * 0.05;
-    sWaveFreq += (targetFreq - sWaveFreq) * 0.05;
-    sTurb += (targetTurb - sTurb) * 0.05;
+    // Smooth approach (reduced to 0.015 for gentle morphing)
+    sWaveSpeed += (targetSpeed - sWaveSpeed) * 0.015;
+    sWaveAmp += (targetAmp - sWaveAmp) * 0.015;
+    sWaveFreq += (targetFreq - sWaveFreq) * 0.015;
+    sTurb += (targetTurb - sTurb) * 0.015;
 
     mat.uniforms.uWaveSpeed.value = sWaveSpeed;
     mat.uniforms.uWaveAmp.value = sWaveAmp;
@@ -426,8 +426,9 @@
     mat.uniforms.uTurbulence.value = sTurb;
 
     // ---- SCROLL ROTATION: gentle grid rotation as you scroll ----
-    const targetScrollRot = scrollProgress * Math.PI * 0.6; // up to ~108 degrees total
-    sScrollRot += (targetScrollRot - sScrollRot) * 0.04;
+    // Greatly reduced rotation (to 0.02) to stop the waves from overlapping visually
+    const targetScrollRot = scrollProgress * Math.PI * 0.02;
+    sScrollRot += (targetScrollRot - sScrollRot) * 0.01;
     mat.uniforms.uScrollRotation.value = sScrollRot;
 
     // ---- CAMERA: interpolate between keyframe stops ----
@@ -440,13 +441,13 @@
     const targetLy = lerp(cA.ly, cB.ly, easedT);
     const targetLz = lerp(cA.lz, cB.lz, easedT);
 
-    // Smooth camera movement
-    sCamPx += (targetPx - sCamPx) * 0.04;
-    sCamPy += (targetPy - sCamPy) * 0.04;
-    sCamPz += (targetPz - sCamPz) * 0.04;
-    sLookX += (targetLx - sLookX) * 0.04;
-    sLookY += (targetLy - sLookY) * 0.04;
-    sLookZ += (targetLz - sLookZ) * 0.04;
+    // Smooth camera movement (slightly slower for less jarring scrolls)
+    sCamPx += (targetPx - sCamPx) * 0.015;
+    sCamPy += (targetPy - sCamPy) * 0.015;
+    sCamPz += (targetPz - sCamPz) * 0.015;
+    sLookX += (targetLx - sLookX) * 0.015;
+    sLookY += (targetLy - sLookY) * 0.015;
+    sLookZ += (targetLz - sLookZ) * 0.015;
 
     camera.position.set(
       sCamPx + mouse.sx * 3,
