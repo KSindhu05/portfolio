@@ -59,12 +59,19 @@
     const progressBar = document.getElementById('scroll-progress');
     if (!progressBar) return;
 
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = scrollPercent + '%';
-    });
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          progressBar.style.width = scrollPercent + '%';
+          scrollTicking = false;
+        });
+      }
+    }, { passive: true });
   }
 
   /* ===== CUSTOM ANIMATED CURSOR ===== */
@@ -330,17 +337,23 @@
     const navLinks = document.querySelector('.nav-links');
     const links = document.querySelectorAll('.nav-links a');
 
-    // Scroll shrink
+    // Scroll shrink — throttled with rAF
+    let navScrollTicking = false;
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 80) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
+      if (!navScrollTicking) {
+        navScrollTicking = true;
+        requestAnimationFrame(() => {
+          if (window.scrollY > 80) {
+            navbar.classList.add('scrolled');
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+          // Active section highlight
+          highlightActiveSection(links);
+          navScrollTicking = false;
+        });
       }
-
-      // Active section highlight
-      highlightActiveSection(links);
-    });
+    }, { passive: true });
 
     // Hamburger toggle
     if (hamburger && navLinks) {
@@ -604,21 +617,35 @@
       }
     }
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach((p) => {
-        p.update();
-        p.draw();
-      });
-      
-      drawConnections();
-      animationId = requestAnimationFrame(animate);
-    }
-
     // Only run if user doesn't prefer reduced motion
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      animate();
+      // Only animate when the skills section is visible
+      const skillsSection = canvas.closest('section') || canvas.parentElement;
+      let isVisible = false;
+
+      const visObserver = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+        if (isVisible && !animationId) {
+          animate();
+        }
+      }, { threshold: 0 });
+      visObserver.observe(skillsSection);
+
+      function animate() {
+        if (!isVisible) {
+          animationId = null;
+          return;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach((p) => {
+          p.update();
+          p.draw();
+        });
+        
+        drawConnections();
+        animationId = requestAnimationFrame(animate);
+      }
     }
   }
 
@@ -976,23 +1003,34 @@
   /* ===== PARALLAX ELEMENTS ===== */
   function initParallaxElements() {
     const parallaxElements = document.querySelectorAll('.floating-shape, .avatar-ring');
+    if (!parallaxElements.length) return;
 
+    let parallaxTicking = false;
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-
-      parallaxElements.forEach((el, index) => {
-        const speed = 0.02 + (index * 0.01);
-        const yOffset = scrolled * speed;
-        el.style.transform = el.style.transform
-          ? el.style.transform.replace(/translateY\([^)]*\)/, `translateY(${-yOffset}px)`)
-          : `translateY(${-yOffset}px)`;
-      });
-    });
+      if (!parallaxTicking) {
+        parallaxTicking = true;
+        requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          // Only process parallax if hero section is likely visible
+          if (scrolled < window.innerHeight * 1.5) {
+            parallaxElements.forEach((el, index) => {
+              const speed = 0.02 + (index * 0.01);
+              const yOffset = scrolled * speed;
+              el.style.transform = `translateY(${-yOffset}px)`;
+            });
+          }
+          parallaxTicking = false;
+        });
+      }
+    }, { passive: true });
   }
 
   /* Certificate viewer functionality has been moved to a self-contained inline script in index.html for maximum reliability and to bypass cache/init issues. */
-  /* ===== SCREENSHOT PROTECTION ===== */
+  /* ===== SCREENSHOT PROTECTION (Desktop + Mobile) ===== */
   function initScreenshotProtection() {
+    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // ---- Protection Overlay ----
     const overlay = document.createElement('div');
     overlay.id = 'screenshot-overlay';
     overlay.style.cssText = `
@@ -1008,15 +1046,16 @@
       z-index: 9999999;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.15s ease;
+      transition: opacity 0.1s ease;
       font-family: 'Space Grotesk', sans-serif;
       text-align: center;
+      padding: 20px;
     `;
     
     overlay.innerHTML = `
-      <i class="fas fa-shield-alt" style="font-size: 4rem; margin-bottom: 1rem;"></i>
-      <h2 style="font-size: 2rem; margin: 0;">Screenshots Restricted</h2>
-      <p style="font-size: 1rem; color: #94a3b8; margin-top: 0.5rem;">Capturing this profile is disabled for privacy.</p>
+      <i class="fas fa-shield-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+      <h2 style="font-size: 1.6rem; margin: 0;">Screenshots Restricted</h2>
+      <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 0.5rem;">Capturing this profile is disabled for privacy.</p>
     `;
     document.body.appendChild(overlay);
 
@@ -1037,7 +1076,81 @@
       overlay.style.pointerEvents = 'none';
     }
 
-    // 1. Intercept PrintScreen and common Snipping tool shortcuts
+    // ========================================
+    // MOBILE-SPECIFIC PROTECTIONS
+    // ========================================
+
+    // 1. Page Visibility API — detects screenshots on iOS (page briefly goes hidden)
+    //    and Android (some devices trigger visibilitychange during screenshot)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        hideScreen();
+        clearTimeout(restoreTimeout);
+        restoreTimeout = setTimeout(restoreScreen, 3000);
+      }
+    });
+
+    // 2. Prevent long-press context menu on mobile (blocks "Save Image" dialog)
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    // 3. Block touch-based image saving — prevent long press on all images
+    document.querySelectorAll('img').forEach((img) => {
+      img.setAttribute('draggable', 'false');
+      img.style.webkitTouchCallout = 'none';
+      img.style.webkitUserSelect = 'none';
+      img.style.userSelect = 'none';
+      img.style.pointerEvents = 'none';
+
+      img.addEventListener('touchstart', (e) => {
+        // Prevent default only for long press (image save)
+        let longPressTimer = setTimeout(() => {
+          e.preventDefault();
+        }, 500);
+        img.addEventListener('touchend', () => clearTimeout(longPressTimer), { once: true });
+        img.addEventListener('touchmove', () => clearTimeout(longPressTimer), { once: true });
+      }, { passive: false });
+    });
+
+    // 4. Disable text selection on the entire page to prevent copy-paste of content
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.userSelect = 'none';
+    // Re-enable for form inputs
+    document.querySelectorAll('input, textarea').forEach((el) => {
+      el.style.webkitUserSelect = 'auto';
+      el.style.userSelect = 'auto';
+    });
+
+    // 5. Detect iOS screenshot (iOS fires a touchcancel + resize in quick succession)
+    if (isMobile) {
+      let touchActive = false;
+      let screenshotCheckTimer = null;
+
+      document.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
+      document.addEventListener('touchend', () => { touchActive = false; }, { passive: true });
+
+      // On iOS, a screenshot triggers a brief blur then focus
+      window.addEventListener('resize', () => {
+        if (!touchActive) {
+          // Possible screenshot — screen dimensions didn't actually change
+          clearTimeout(screenshotCheckTimer);
+          screenshotCheckTimer = setTimeout(() => {
+            // Quick flash overlay as deterrent
+            hideScreen();
+            clearTimeout(restoreTimeout);
+            restoreTimeout = setTimeout(restoreScreen, 2500);
+          }, 100);
+        }
+      }, { passive: true });
+    }
+
+    // ========================================
+    // DESKTOP PROTECTIONS (existing + improved)
+    // ========================================
+
+    // 6. Intercept PrintScreen and common Snipping tool shortcuts
     document.addEventListener('keydown', (e) => {
       // PrintScreen key
       if (e.key === 'PrintScreen') {
@@ -1069,11 +1182,15 @@
        }
     });
 
-    // 2. Hide when the window loses focus (activates when snipping tools take control)
-    window.addEventListener('blur', hideScreen);
+    // 7. Hide when the window loses focus (works on both desktop and mobile)
+    window.addEventListener('blur', () => {
+      hideScreen();
+      clearTimeout(restoreTimeout);
+      restoreTimeout = setTimeout(restoreScreen, 3000);
+    });
     window.addEventListener('focus', restoreScreen);
 
-    // 3. Hide on print (Ctrl+P / Print dialog)
+    // 8. Hide on print (Ctrl+P / Print dialog)
     window.addEventListener('beforeprint', hideScreen);
     window.addEventListener('afterprint', restoreScreen);
   }

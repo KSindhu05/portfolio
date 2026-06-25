@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <script>
-    // Global error listener to help debug on user's screen
+    // Global error listener — logs to console instead of blocking with alert()
     window.onerror = function(msg, url, line, col, err) {
-      alert("JavaScript Error detected:\n\nMessage: " + msg + "\nFile: " + url + "\nLine: " + line + ":" + col);
+      console.error("JS Error:", msg, "at", url, line + ":" + col, err);
       return false;
     };
 

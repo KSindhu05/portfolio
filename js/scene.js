@@ -38,17 +38,18 @@
   document.addEventListener('mousemove', (e) => {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  });
+  }, { passive: true });
 
   // ---- Scroll ----
   let scrollY = 0;
   let smoothScroll = 0;
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
 
-  // Calculate max scroll for normalization
-  function getMaxScroll() {
-    return Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-  }
+  // Cache max scroll — recalculate only on resize, not every frame
+  let cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  window.addEventListener('resize', () => {
+    cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  }, { passive: true });
 
   // ===========================================================
   // COLOR PALETTES PER SECTION (smooth transitions)
@@ -122,9 +123,11 @@
   // PARTICLE WAVE GRID
   // ===========================================================
 
-  const COLS = 120;
-  const ROWS = 80;
-  const SPACING = 1.0;
+  // Reduce particle count on mobile for smooth performance
+  const isMobile = window.innerWidth <= 768;
+  const COLS = isMobile ? 60 : 120;
+  const ROWS = isMobile ? 40 : 80;
+  const SPACING = isMobile ? 2.0 : 1.0;
   const COUNT = COLS * ROWS;
 
   const geo = new THREE.BufferGeometry();
@@ -161,47 +164,55 @@
     }
   }
 
+  // Pre-allocate reusable THREE.Color objects to avoid GC pressure
+  // (Previously created ~COUNT new Color objects per frame = massive GC stalls)
+  const _tmpA = new THREE.Color();
+  const _tmpB = new THREE.Color();
+  const _botA = new THREE.Color();
+  const _botB = new THREE.Color();
+
+  // Track current section to skip redundant color recalculations
+  let _lastSectionIndex = -1;
+  let _lastSectionT = -1;
+
   // Initial colors
   updateColors(palettes[0]);
 
   function updateColors(pal) {
-    const tmpC = new THREE.Color();
     for (let i = 0; i < COUNT; i++) {
       const tx = gridCoords[i * 2];
       const tz = gridCoords[i * 2 + 1];
 
-      const top = tmpC.copy(pal.c1).lerp(pal.c2, tx);
-      const bot = new THREE.Color().copy(pal.c3).lerp(pal.c4, tx);
-      const final = top.lerp(bot, tz);
+      const top = _tmpA.copy(pal.c1).lerp(pal.c2, tx);
+      _botA.copy(pal.c3).lerp(pal.c4, tx);
+      top.lerp(_botA, tz);
 
-      colors[i * 3] = final.r;
-      colors[i * 3 + 1] = final.g;
-      colors[i * 3 + 2] = final.b;
+      colors[i * 3] = top.r;
+      colors[i * 3 + 1] = top.g;
+      colors[i * 3 + 2] = top.b;
     }
   }
 
-  // Blend between two palettes
+  // Blend between two palettes — zero allocations per call
   function blendColors(palA, palB, t) {
-    const tmpA = new THREE.Color();
-    const tmpB = new THREE.Color();
     for (let i = 0; i < COUNT; i++) {
       const tx = gridCoords[i * 2];
       const tz = gridCoords[i * 2 + 1];
 
       // Palette A
-      const topA = tmpA.copy(palA.c1).lerp(palA.c2, tx);
-      const botA = new THREE.Color().copy(palA.c3).lerp(palA.c4, tx);
-      const colA = topA.lerp(botA, tz);
+      const topA = _tmpA.copy(palA.c1).lerp(palA.c2, tx);
+      _botA.copy(palA.c3).lerp(palA.c4, tx);
+      topA.lerp(_botA, tz);
 
       // Palette B
-      const topB = tmpB.copy(palB.c1).lerp(palB.c2, tx);
-      const botB = new THREE.Color().copy(palB.c3).lerp(palB.c4, tx);
-      const colB = topB.lerp(botB, tz);
+      const topB = _tmpB.copy(palB.c1).lerp(palB.c2, tx);
+      _botB.copy(palB.c3).lerp(palB.c4, tx);
+      topB.lerp(_botB, tz);
 
       // Blend
-      colors[i * 3] = colA.r + (colB.r - colA.r) * t;
-      colors[i * 3 + 1] = colA.g + (colB.g - colA.g) * t;
-      colors[i * 3 + 2] = colA.b + (colB.b - colA.b) * t;
+      colors[i * 3] = topA.r + (topB.r - topA.r) * t;
+      colors[i * 3 + 1] = topA.g + (topB.g - topA.g) * t;
+      colors[i * 3 + 2] = topA.b + (topB.b - topA.b) * t;
     }
   }
 
@@ -382,20 +393,39 @@
   let sCamPx = 0, sCamPy = 25, sCamPz = 55, sLookX = 0, sLookY = 0, sLookZ = 0;
   let sScrollRot = 0;
 
+  // Framerate-independent adaptive lerp:
+  // - baseFactor: minimum smoothing speed (gentle scrolling)
+  // - Adapts faster when the gap is large (rapid scrolling)
+  // - dt normalizes to ~60fps so behavior is consistent at any framerate
+  function adaptiveLerp(current, target, baseFactor, dt) {
+    const gap = Math.abs(target - current);
+    // Scale factor up when gap is large (fast scroll), down when small (gentle)
+    const adaptive = baseFactor + Math.min(gap * 0.15, 0.35);
+    // Framerate-independent: 1 - (1-factor)^(dt*60) approximation
+    const factor = 1 - Math.pow(1 - adaptive, dt * 60);
+    return current + (target - current) * factor;
+  }
+
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
+    const dt = Math.min(clock.getDelta(), 0.05); // Cap dt to prevent huge jumps after tab switch
 
-    // Smooth mouse
-    mouse.sx += (mouse.x - mouse.sx) * 0.04;
-    mouse.sy += (mouse.y - mouse.sy) * 0.04;
+    // Smooth mouse (adaptive — snappy response to fast movement)
+    mouse.sx = adaptiveLerp(mouse.sx, mouse.x, 0.06, dt);
+    mouse.sy = adaptiveLerp(mouse.sy, mouse.y, 0.06, dt);
 
-    // Smooth scroll (slowed down from 0.03 to 0.015 for a gentler flow)
-    smoothScroll += (scrollY - smoothScroll) * 0.015;
+    // Smooth scroll — adaptive: gentle for slow scrolling, responsive for fast
+    const scrollGap = Math.abs(scrollY - smoothScroll);
+    const scrollFactor = 0.04 + Math.min(scrollGap * 0.00008, 0.25);
+    const scrollLerp = 1 - Math.pow(1 - scrollFactor, dt * 60);
+    smoothScroll += (scrollY - smoothScroll) * scrollLerp;
+
+    // Snap if close enough (prevents infinite tiny updates)
+    if (Math.abs(scrollY - smoothScroll) < 0.5) smoothScroll = scrollY;
 
     // ---- Scroll progress (0..1 over full page) ----
-    const maxScroll = getMaxScroll();
-    const scrollProgress = Math.max(0, Math.min(1, smoothScroll / maxScroll));
+    const scrollProgress = Math.max(0, Math.min(1, smoothScroll / cachedMaxScroll));
 
     // ---- Map scroll to section index (0..6) ----
     const numSections = palettes.length;
@@ -407,9 +437,14 @@
     // Smooth eased transition
     const easedT = smoothstepJS(sectionT);
 
-    // ---- COLORS: blend between section palettes ----
-    blendColors(palettes[sectionIndex], palettes[nextIndex], easedT);
-    geo.attributes.color.needsUpdate = true;
+    // ---- COLORS: only recalculate when section or blend factor actually changes ----
+    const quantizedT = Math.round(easedT * 200) / 200; // 0.5% granularity for smooth fast-scroll
+    if (sectionIndex !== _lastSectionIndex || quantizedT !== _lastSectionT) {
+      _lastSectionIndex = sectionIndex;
+      _lastSectionT = quantizedT;
+      blendColors(palettes[sectionIndex], palettes[nextIndex], easedT);
+      geo.attributes.color.needsUpdate = true;
+    }
 
     // ---- WAVE PARAMS: interpolate between presets ----
     const wA = wavePresets[sectionIndex];
@@ -419,11 +454,11 @@
     const targetFreq = lerp(wA.freq, wB.freq, easedT);
     const targetTurb = lerp(wA.turb, wB.turb, easedT);
 
-    // Smooth approach (reduced to 0.015 for gentle morphing)
-    sWaveSpeed += (targetSpeed - sWaveSpeed) * 0.015;
-    sWaveAmp += (targetAmp - sWaveAmp) * 0.015;
-    sWaveFreq += (targetFreq - sWaveFreq) * 0.015;
-    sTurb += (targetTurb - sTurb) * 0.015;
+    // Adaptive smooth approach — responds faster to rapid changes
+    sWaveSpeed = adaptiveLerp(sWaveSpeed, targetSpeed, 0.04, dt);
+    sWaveAmp = adaptiveLerp(sWaveAmp, targetAmp, 0.04, dt);
+    sWaveFreq = adaptiveLerp(sWaveFreq, targetFreq, 0.04, dt);
+    sTurb = adaptiveLerp(sTurb, targetTurb, 0.04, dt);
 
     mat.uniforms.uWaveSpeed.value = sWaveSpeed;
     mat.uniforms.uWaveAmp.value = sWaveAmp;
@@ -446,13 +481,13 @@
     const targetLy = lerp(cA.ly, cB.ly, easedT);
     const targetLz = lerp(cA.lz, cB.lz, easedT);
 
-    // Smooth camera movement (slightly slower for less jarring scrolls)
-    sCamPx += (targetPx - sCamPx) * 0.015;
-    sCamPy += (targetPy - sCamPy) * 0.015;
-    sCamPz += (targetPz - sCamPz) * 0.015;
-    sLookX += (targetLx - sLookX) * 0.015;
-    sLookY += (targetLy - sLookY) * 0.015;
-    sLookZ += (targetLz - sLookZ) * 0.015;
+    // Adaptive camera smoothing — responsive to fast scrolls, silky for gentle ones
+    sCamPx = adaptiveLerp(sCamPx, targetPx, 0.04, dt);
+    sCamPy = adaptiveLerp(sCamPy, targetPy, 0.04, dt);
+    sCamPz = adaptiveLerp(sCamPz, targetPz, 0.04, dt);
+    sLookX = adaptiveLerp(sLookX, targetLx, 0.04, dt);
+    sLookY = adaptiveLerp(sLookY, targetLy, 0.04, dt);
+    sLookZ = adaptiveLerp(sLookZ, targetLz, 0.04, dt);
 
     camera.position.set(
       sCamPx + mouse.sx * 3,
@@ -480,9 +515,14 @@
   animate();
 
   // ---- Resize ----
+  // Debounce resize to avoid excessive recalculations during drag-resize
+  let resizeTimeout;
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }, 150);
+  }, { passive: true });
 })();

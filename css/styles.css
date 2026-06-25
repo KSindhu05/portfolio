@@ -118,6 +118,26 @@ a {
 img {
   max-width: 100%;
   display: block;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Re-enable pointer events for images inside clickable containers */
+a img,
+button img,
+.cert-image-preview img,
+.cert-modal-body img {
+  pointer-events: auto;
+}
+
+/* Ensure form inputs remain selectable */
+input,
+textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 ul,
@@ -4358,4 +4378,38 @@ body.theme-aurora .skill-card {
 body.theme-aurora .skill-card:hover {
   border-color: rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15), 0 0 20px rgba(6, 182, 212, 0.1) !important;
+}
+
+/* ===== PERFORMANCE: GPU compositing hints for animated elements ===== */
+.avatar-ring,
+.floating-shape,
+.core-orb,
+.core-pulse,
+.core-ring,
+#cursor-dot,
+#cursor-outline {
+  will-change: transform;
+}
+
+/* ===== ACCESSIBILITY: Respect reduced motion preferences ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  #bg-canvas {
+    display: none;
+  }
+
+  .avatar-ring,
+  .floating-shape,
+  .core-pulse,
+  .core-ring {
+    animation: none !important;
+  }
 }
