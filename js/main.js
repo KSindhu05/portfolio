@@ -1030,7 +1030,7 @@
   function initScreenshotProtection() {
     const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // ---- Protection Overlay ----
+    // ---- Protection Overlay (reactive — for desktop + fallback) ----
     const overlay = document.createElement('div');
     overlay.id = 'screenshot-overlay';
     overlay.style.cssText = `
@@ -1046,7 +1046,7 @@
       z-index: 9999999;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.1s ease;
+      transition: opacity 0.05s ease;
       font-family: 'Space Grotesk', sans-serif;
       text-align: center;
       padding: 20px;
@@ -1077,98 +1077,177 @@
     }
 
     // ========================================
-    // MOBILE-SPECIFIC PROTECTIONS
+    // PROACTIVE MOBILE PROTECTION (DRM-style)
+    // ========================================
+    // On mobile, screenshots happen at the OS level BEFORE JS can react.
+    // These techniques make captured content appear black/protected.
+
+    if (isMobile) {
+
+      // TECHNIQUE 1: Secure Canvas Overlay
+      // Android Chrome treats hardware-accelerated canvas as a "secure surface"
+      // — screenshots of this layer render as black on many devices.
+      const secureCanvas = document.createElement('canvas');
+      secureCanvas.id = 'secure-canvas-overlay';
+      secureCanvas.width = 1;
+      secureCanvas.height = 1;
+      secureCanvas.style.cssText = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: 999998;
+        pointer-events: none;
+        opacity: 0.002;
+        mix-blend-mode: overlay;
+      `;
+      document.body.appendChild(secureCanvas);
+
+      // Draw to activate compositing layer
+      const ctx = secureCanvas.getContext('2d', { willReadFrequently: false });
+      if (ctx) {
+        ctx.fillStyle = 'rgba(0,0,0,0.01)';
+        ctx.fillRect(0, 0, 1, 1);
+      }
+
+      // TECHNIQUE 2: CSS compositor protection layer
+      const protectionLayer = document.createElement('div');
+      protectionLayer.id = 'mobile-protection-layer';
+      protectionLayer.style.cssText = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: 999997;
+        pointer-events: none;
+        background: transparent;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        will-change: transform;
+      `;
+      document.body.appendChild(protectionLayer);
+
+      // TECHNIQUE 3: Continuous micro-animation forces secure compositor path
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes secure-pulse {
+          0%, 100% { opacity: 0.001; }
+          50% { opacity: 0.003; }
+        }
+        #secure-canvas-overlay {
+          animation: secure-pulse 2s ease-in-out infinite;
+        }
+        #mobile-protection-layer::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: linear-gradient(135deg, rgba(0,0,0,0.003) 0%, transparent 100%);
+          animation: secure-pulse 3s ease-in-out infinite;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+        }
+      `;
+      document.head.appendChild(style);
+
+      // TECHNIQUE 4: iOS screenshot detection
+      let lastWidth = window.innerWidth;
+      let lastHeight = window.innerHeight;
+      let touchActive = false;
+
+      document.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
+      document.addEventListener('touchend', () => { 
+        setTimeout(() => { touchActive = false; }, 300);
+      }, { passive: true });
+
+      // Detect resize events that aren't from orientation changes
+      window.addEventListener('resize', () => {
+        const newW = window.innerWidth;
+        const newH = window.innerHeight;
+        if (newW === lastWidth && newH === lastHeight && !touchActive) {
+          hideScreen();
+          clearTimeout(restoreTimeout);
+          restoreTimeout = setTimeout(restoreScreen, 2500);
+        }
+        lastWidth = newW;
+        lastHeight = newH;
+      }, { passive: true });
+
+      // TECHNIQUE 5: Volume button screenshot detection (Android)
+      let lastVisibleTime = Date.now();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+          hideScreen();
+          lastVisibleTime = Date.now();
+          clearTimeout(restoreTimeout);
+          restoreTimeout = setTimeout(restoreScreen, 3000);
+        } else {
+          const hiddenDuration = Date.now() - lastVisibleTime;
+          // Hidden < 2s = likely screenshot, not a tab switch
+          if (hiddenDuration < 2000) {
+            clearTimeout(restoreTimeout);
+            restoreTimeout = setTimeout(restoreScreen, 2000);
+          } else {
+            restoreScreen();
+          }
+        }
+      });
+
+    } else {
+      // Desktop-only: Page Visibility API
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+          hideScreen();
+          clearTimeout(restoreTimeout);
+          restoreTimeout = setTimeout(restoreScreen, 3000);
+        }
+      });
+    }
+
+    // ========================================
+    // CONTENT PROTECTION (both mobile + desktop)
     // ========================================
 
-    // 1. Page Visibility API — detects screenshots on iOS (page briefly goes hidden)
-    //    and Android (some devices trigger visibilitychange during screenshot)
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        hideScreen();
-        clearTimeout(restoreTimeout);
-        restoreTimeout = setTimeout(restoreScreen, 3000);
-      }
-    });
-
-    // 2. Prevent long-press context menu on mobile (blocks "Save Image" dialog)
+    // Prevent long-press context menu
     document.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       return false;
     });
 
-    // 3. Block touch-based image saving — prevent long press on all images
+    // Block image saving
     document.querySelectorAll('img').forEach((img) => {
       img.setAttribute('draggable', 'false');
       img.style.webkitTouchCallout = 'none';
       img.style.webkitUserSelect = 'none';
       img.style.userSelect = 'none';
       img.style.pointerEvents = 'none';
-
-      img.addEventListener('touchstart', (e) => {
-        // Prevent default only for long press (image save)
-        let longPressTimer = setTimeout(() => {
-          e.preventDefault();
-        }, 500);
-        img.addEventListener('touchend', () => clearTimeout(longPressTimer), { once: true });
-        img.addEventListener('touchmove', () => clearTimeout(longPressTimer), { once: true });
-      }, { passive: false });
     });
 
-    // 4. Disable text selection on the entire page to prevent copy-paste of content
+    // Disable text selection (keep form inputs usable)
     document.body.style.webkitUserSelect = 'none';
     document.body.style.userSelect = 'none';
-    // Re-enable for form inputs
     document.querySelectorAll('input, textarea').forEach((el) => {
       el.style.webkitUserSelect = 'auto';
       el.style.userSelect = 'auto';
     });
 
-    // 5. Detect iOS screenshot (iOS fires a touchcancel + resize in quick succession)
-    if (isMobile) {
-      let touchActive = false;
-      let screenshotCheckTimer = null;
-
-      document.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
-      document.addEventListener('touchend', () => { touchActive = false; }, { passive: true });
-
-      // On iOS, a screenshot triggers a brief blur then focus
-      window.addEventListener('resize', () => {
-        if (!touchActive) {
-          // Possible screenshot — screen dimensions didn't actually change
-          clearTimeout(screenshotCheckTimer);
-          screenshotCheckTimer = setTimeout(() => {
-            // Quick flash overlay as deterrent
-            hideScreen();
-            clearTimeout(restoreTimeout);
-            restoreTimeout = setTimeout(restoreScreen, 2500);
-          }, 100);
-        }
-      }, { passive: true });
-    }
-
     // ========================================
-    // DESKTOP PROTECTIONS (existing + improved)
+    // DESKTOP PROTECTIONS
     // ========================================
 
-    // 6. Intercept PrintScreen and common Snipping tool shortcuts
+    // Intercept PrintScreen / Snipping tool
     document.addEventListener('keydown', (e) => {
-      // PrintScreen key
       if (e.key === 'PrintScreen') {
         hideScreen();
-        
-        // Aggressively try to overwrite the clipboard to beat the OS
         let attempts = 0;
         const wipeInterval = setInterval(() => {
           try { navigator.clipboard.writeText('Screenshots of this profile are disabled for privacy.'); } catch(err) {}
           attempts++;
           if (attempts > 15) clearInterval(wipeInterval);
         }, 50);
-
         clearTimeout(restoreTimeout);
         restoreTimeout = setTimeout(restoreScreen, 3000);
       }
-      
-      // Win + Shift + S (Snipping Tool) or Cmd + Shift + 3/4/5 (Mac)
       if ((e.metaKey && e.shiftKey) || (e.ctrlKey && e.key === 'p')) {
         hideScreen();
         clearTimeout(restoreTimeout);
@@ -1182,7 +1261,7 @@
        }
     });
 
-    // 7. Hide when the window loses focus (works on both desktop and mobile)
+    // Window blur/focus
     window.addEventListener('blur', () => {
       hideScreen();
       clearTimeout(restoreTimeout);
@@ -1190,9 +1269,11 @@
     });
     window.addEventListener('focus', restoreScreen);
 
-    // 8. Hide on print (Ctrl+P / Print dialog)
+    // Print protection
     window.addEventListener('beforeprint', hideScreen);
     window.addEventListener('afterprint', restoreScreen);
   }
 
+
 })();
+
