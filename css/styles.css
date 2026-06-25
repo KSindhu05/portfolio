@@ -4287,6 +4287,25 @@ body.theme-terminal .skill-tags {
   }
 }
 /* ===== ADDITIONAL SKILLS THEME OVERRIDES ===== */
+body.light-theme .skill-node {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .skill-node:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1), 0 0 15px color-mix(in srgb, var(--node-color) 20%, transparent) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light-theme .skill-node .node-name {
+  color: #0F172A !important;
+}
+
+body.light-theme .skill-node .node-desc {
+  color: #475569 !important;
+}
 body.light-theme .skill-card {
   background: rgba(255, 255, 255, 0.6) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;

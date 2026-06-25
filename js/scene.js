@@ -142,8 +142,13 @@
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       const i = row * COLS + col;
-      const x = col * SPACING - halfW;
-      const z = row * SPACING - halfH;
+      
+      // Add random jitter to prevent Moire/overlapping grid patterns when camera orbits
+      const jitterX = (Math.random() - 0.5) * SPACING * 0.8;
+      const jitterZ = (Math.random() - 0.5) * SPACING * 0.8;
+
+      const x = col * SPACING - halfW + jitterX;
+      const z = row * SPACING - halfH + jitterZ;
 
       positions[i * 3] = x;
       positions[i * 3 + 1] = 0;
@@ -426,8 +431,8 @@
     mat.uniforms.uTurbulence.value = sTurb;
 
     // ---- SCROLL ROTATION: gentle grid rotation as you scroll ----
-    // Greatly reduced rotation (to 0.02) to stop the waves from overlapping visually
-    const targetScrollRot = scrollProgress * Math.PI * 0.02;
+    // Set to 0 to completely prevent the waves from overlapping visually (Moire effect)
+    const targetScrollRot = 0;
     sScrollRot += (targetScrollRot - sScrollRot) * 0.01;
     mat.uniforms.uScrollRotation.value = sScrollRot;
 

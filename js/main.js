@@ -34,6 +34,7 @@
 
     initThemeCycle();
     initKonamiCode();
+    initScreenshotProtection();
   }
 
   /* ===== CINEMATIC LOADER ===== */
@@ -436,9 +437,7 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('active');
-          } else {
-            // Remove active when scrolled out so it re-animates on re-entry
-            entry.target.classList.remove('active');
+            observer.unobserve(entry.target); // Trigger only once for performance and prevent overlapping
           }
         });
       },
@@ -946,6 +945,7 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             triggerSectionAnimation(entry.target);
+            sectionObserver.unobserve(entry.target); // Trigger only once
           }
         });
       },
@@ -991,4 +991,91 @@
   }
 
   /* Certificate viewer functionality has been moved to a self-contained inline script in index.html for maximum reliability and to bypass cache/init issues. */
+  /* ===== SCREENSHOT PROTECTION ===== */
+  function initScreenshotProtection() {
+    const overlay = document.createElement('div');
+    overlay.id = 'screenshot-overlay';
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: #0B1120;
+      color: #38bdf8;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      font-family: 'Space Grotesk', sans-serif;
+      text-align: center;
+    `;
+    
+    overlay.innerHTML = `
+      <i class="fas fa-shield-alt" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+      <h2 style="font-size: 2rem; margin: 0;">Screenshots Restricted</h2>
+      <p style="font-size: 1rem; color: #94a3b8; margin-top: 0.5rem;">Capturing this profile is disabled for privacy.</p>
+    `;
+    document.body.appendChild(overlay);
+
+    let isHidden = false;
+    let restoreTimeout;
+
+    function hideScreen() {
+      if (isHidden) return;
+      isHidden = true;
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'all';
+    }
+
+    function restoreScreen() {
+      if (!isHidden) return;
+      isHidden = false;
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+    }
+
+    // 1. Intercept PrintScreen and common Snipping tool shortcuts
+    document.addEventListener('keydown', (e) => {
+      // PrintScreen key
+      if (e.key === 'PrintScreen') {
+        hideScreen();
+        
+        // Aggressively try to overwrite the clipboard to beat the OS
+        let attempts = 0;
+        const wipeInterval = setInterval(() => {
+          try { navigator.clipboard.writeText('Screenshots of this profile are disabled for privacy.'); } catch(err) {}
+          attempts++;
+          if (attempts > 15) clearInterval(wipeInterval);
+        }, 50);
+
+        clearTimeout(restoreTimeout);
+        restoreTimeout = setTimeout(restoreScreen, 3000);
+      }
+      
+      // Win + Shift + S (Snipping Tool) or Cmd + Shift + 3/4/5 (Mac)
+      if ((e.metaKey && e.shiftKey) || (e.ctrlKey && e.key === 'p')) {
+        hideScreen();
+        clearTimeout(restoreTimeout);
+        restoreTimeout = setTimeout(restoreScreen, 3000);
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+       if (e.key === 'PrintScreen') {
+         try { navigator.clipboard.writeText('Screenshots of this profile are disabled for privacy.'); } catch(err) {}
+       }
+    });
+
+    // 2. Hide when the window loses focus (activates when snipping tools take control)
+    window.addEventListener('blur', hideScreen);
+    window.addEventListener('focus', restoreScreen);
+
+    // 3. Hide on print (Ctrl+P / Print dialog)
+    window.addEventListener('beforeprint', hideScreen);
+    window.addEventListener('afterprint', restoreScreen);
+  }
+
 })();

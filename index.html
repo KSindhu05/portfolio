@@ -117,7 +117,7 @@
       <div class="hero-avatar-wrapper reveal-left">
         <div class="hero-avatar-container">
           <div class="avatar-glow"></div>
-          <img src="assets/profile.png" alt="K Sindhu - AI/ML Developer" class="hero-avatar" oncontextmenu="return false;" draggable="false" style="pointer-events: none; user-select: none; -webkit-user-drag: none;">
+          <img src="assets/profile.png" alt="K Sindhu - AI/ML Developer" class="hero-avatar" oncontextmenu="return false;" draggable="false" style="pointer-events: none; user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none;">
           <div class="avatar-ring avatar-ring-1"></div>
           <div class="avatar-ring avatar-ring-2"></div>
           <div class="avatar-ring avatar-ring-3"></div>
@@ -166,7 +166,7 @@
           <a href="https://linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <i class="fab fa-linkedin-in"></i>
           </a>
-          <a href="mailto:sindhu988042525@gmail.com" aria-label="Email">
+          <a href="mailto:ksindhu092006@gmail.com" aria-label="Email">
             <i class="fas fa-envelope"></i>
           </a>
         </div>
@@ -205,7 +205,7 @@
         <div class="about-text reveal-left">
           <p>
             I'm <strong style="color: var(--text-primary)">K Sindhu</strong>, a passionate Computer Science graduate
-            currently pursuing my <strong style="color: var(--accent-blue)">Bachelor of Engineering in Artificial
+            currently pursuing my <strong style="color: var(--accent-blue)">Bachelor of Technology in Artificial
               Intelligence &amp; Machine Learning</strong>.
           </p>
           <p>
@@ -229,7 +229,7 @@
               </div>
               <div class="about-highlight-text">
                 <h4>Education</h4>
-                <p>Diploma in CSE + Pursuing B.E. in AI/ML</p>
+                <p>Diploma in CSE + Pursuing B.Tech. in AI/ML</p>
               </div>
             </div>
             <div class="about-highlight-item">
@@ -463,10 +463,10 @@
     <section id="education">
       <div class="container">
         <h2 class="section-title reveal">
-          Education <span class="gradient-text">Journey</span>
+          Education &amp; <span class="gradient-text">Experience</span>
         </h2>
         <p class="section-subtitle reveal">
-          My academic path from diploma to engineering — a journey of continuous growth and discovery.
+          My academic path and professional experience — a journey of continuous growth and discovery.
         </p>
 
         <div class="timeline">
@@ -491,7 +491,7 @@
             <div class="timeline-node"></div>
             <div class="glass-card timeline-card">
               <span class="timeline-date"><i class="fas fa-calendar-alt"></i> Currently Pursuing</span>
-              <h3>B.E. in Artificial Intelligence &amp; Machine Learning</h3>
+              <h3>B.Tech. in Artificial Intelligence &amp; Machine Learning</h3>
               <p>
                 Deepening expertise in AI models, neural networks, machine learning algorithms, and advanced web
                 technologies.
@@ -499,6 +499,23 @@
               <span class="timeline-status status-current">
                 <i class="fas fa-spinner fa-pulse"></i> In Progress
               </span>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-node"></div>
+            <div class="glass-card timeline-card">
+              <span class="timeline-date"><i class="fas fa-briefcase"></i> Jan 3, 2026 - Apr 6, 2026</span>
+              <h3>Java Full Stack Intern</h3>
+              <h4 style="color: var(--accent-blue); font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm);">Techmiya Solutions India Pvt. Ltd.</h4>
+              <p>
+                Successfully completed a comprehensive internship program focusing on Java Full Stack development. Gained hands-on experience in building applications, adhering to organizational policies, and meeting project goals.
+              </p>
+              <div style="margin-top: 15px;">
+                <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-techmiya" onclick="openCertificateModal('cert-techmiya')" style="font-size: 0.85rem; padding: 8px 16px;">
+                  <i class="fas fa-certificate"></i> View Internship Certificate
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -737,13 +754,13 @@
             </p>
 
             <div class="contact-links">
-              <a href="mailto:sindhu988042525@gmail.com" class="contact-link-item">
+              <a href="mailto:ksindhu092006@gmail.com" class="contact-link-item">
                 <i class="fas fa-envelope"></i>
-                <span>sindhu988042525@gmail.com</span>
+                <span>ksindhu092006@gmail.com</span>
               </a>
-              <a href="tel:+919880428931" class="contact-link-item">
+              <a href="javascript:void(0)" class="contact-link-item" title="Phone number hidden for privacy">
                 <i class="fas fa-phone"></i>
-                <span>+91 9880428931</span>
+                <span>+91 98804xxxx31</span>
               </a>
               <a href="https://github.com/" target="_blank" rel="noopener" class="contact-link-item">
                 <i class="fab fa-github"></i>
@@ -803,7 +820,7 @@
             <a href="https://linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
               <i class="fab fa-linkedin-in"></i>
             </a>
-            <a href="mailto:sindhu988042525@gmail.com" aria-label="Email">
+            <a href="mailto:ksindhu092006@gmail.com" aria-label="Email">
               <i class="fas fa-envelope"></i>
             </a>
           </div>
@@ -851,6 +868,12 @@
             title: 'Customer Engagement: Problem Solving and Process Controls',
             image: 'assets/cert_customer_solving.png',
             verifyUrl: 'https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb'
+          },
+          'cert-techmiya': {
+            issuer: 'Techmiya Solutions India Pvt. Ltd.',
+            title: 'Java Full Stack Internship',
+            image: 'assets/techmiya_intership.png',
+            verifyUrl: ''
           }
         };
 
@@ -862,6 +885,15 @@
           var modalBody = document.getElementById('cert-modal-body');
           if (!modal || !modalBody) return;
 
+          var verifyBtn = data.verifyUrl 
+            ? '<a href="' + data.verifyUrl + '" target="_blank" rel="noopener" ' +
+              'style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:0.85rem;' +
+              'background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:8px;' +
+              'text-decoration:none;font-weight:500;">' +
+              '<i class="fas fa-external-link-alt"></i> Verify Credential' +
+              '</a>'
+            : '';
+
           modalBody.innerHTML =
             '<div style="text-align:center;">' +
               '<img src="' + data.image + '" alt="' + data.title + ' Certificate" ' +
@@ -869,12 +901,7 @@
                    'border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.5);margin-bottom:20px;">' +
               '<div style="display:flex;gap:15px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px;">' +
                 '<span style="color:#fff;font-size:0.95rem;font-weight:500;">' + data.title + ' — ' + data.issuer + '</span>' +
-                '<a href="' + data.verifyUrl + '" target="_blank" rel="noopener" ' +
-                   'style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:0.85rem;' +
-                   'background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:8px;' +
-                   'text-decoration:none;font-weight:500;">' +
-                  '<i class="fas fa-external-link-alt"></i> Verify Credential' +
-                '</a>' +
+                verifyBtn +
               '</div>' +
             '</div>';
 
