@@ -2175,6 +2175,10 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .hero-avatar-wrapper {
+    display: none;
+  }
+
   section {
     padding: var(--space-3xl) 0;
   }
