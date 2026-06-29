@@ -1128,22 +1128,53 @@
       avatarOverlay.style.pointerEvents = 'none';
     }
 
-    // ---- 5. Desktop: PrintScreen / snipping tool ----
+    // ---- 5. Desktop: PrintScreen / snipping tool / Win+Shift+S ----
     document.addEventListener('keydown', (e) => {
+      // PrintScreen key
       if (e.key === 'PrintScreen') {
         hideAvatar();
         clearTimeout(restoreTimeout);
         restoreTimeout = setTimeout(showAvatar, 3000);
       }
+      // Win + Shift + S (Windows Snip & Sketch)
+      if (e.key === 's' && e.shiftKey && e.metaKey) {
+        hideAvatar();
+        clearTimeout(restoreTimeout);
+        restoreTimeout = setTimeout(showAvatar, 4000);
+      }
       // Cmd+Shift (Mac screenshot) or Ctrl+P (print)
-      if ((e.metaKey && e.shiftKey) || (e.ctrlKey && e.key === 'p')) {
+      if ((e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5')) || (e.ctrlKey && e.key === 'p')) {
         hideAvatar();
         clearTimeout(restoreTimeout);
         restoreTimeout = setTimeout(showAvatar, 3000);
       }
     });
 
-    // ---- 6. Print protection (avatar only) ----
+    // ---- 6. Window blur/focus — snipping tools steal focus ----
+    // Only hides the avatar, NOT the whole page
+    window.addEventListener('blur', () => {
+      hideAvatar();
+      clearTimeout(restoreTimeout);
+      restoreTimeout = setTimeout(showAvatar, 4000);
+    });
+    window.addEventListener('focus', () => {
+      clearTimeout(restoreTimeout);
+      restoreTimeout = setTimeout(showAvatar, 500);
+    });
+
+    // ---- 7. Visibility change — hides avatar during tab switch/capture ----
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        hideAvatar();
+        clearTimeout(restoreTimeout);
+        restoreTimeout = setTimeout(showAvatar, 4000);
+      } else {
+        clearTimeout(restoreTimeout);
+        restoreTimeout = setTimeout(showAvatar, 500);
+      }
+    });
+
+    // ---- 8. Print protection (avatar only) ----
     const printStyle = document.createElement('style');
     printStyle.textContent = `
       @media print {
@@ -1164,8 +1195,10 @@
       }
     `;
     document.head.appendChild(printStyle);
+    window.addEventListener('beforeprint', hideAvatar);
+    window.addEventListener('afterprint', showAvatar);
 
-    // ---- 7. Disable image drag/save for any remaining images ----
+    // ---- 9. Disable image drag/save for any remaining images ----
     document.querySelectorAll('.hero-avatar-container img, .hero-avatar-container canvas').forEach((el) => {
       el.setAttribute('draggable', 'false');
       el.style.webkitTouchCallout = 'none';
