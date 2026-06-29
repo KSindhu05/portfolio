@@ -10,27 +10,24 @@
       return false;
     };
 
-    // Auto cache-buster redirect to ensure the browser loads the latest index.html
-    (function() {
-      var currentVersion = 'v9';
-      var urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('v') !== currentVersion) {
-        urlParams.set('v', currentVersion);
-        window.location.search = urlParams.toString();
-      }
-    })();
+
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>K Sindhu | AI/ML Engineering Student &amp; Developer</title>
   <meta name="description"
     content="Portfolio of K Sindhu — AI/ML Engineering Student, Full Stack Developer, and passionate learner building intelligent solutions through code and innovation.">
   <meta name="author" content="K Sindhu">
+  <meta name="keywords" content="K Sindhu, AI ML developer, portfolio, full stack developer, machine learning, engineering student, web developer">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0B1120">
+  <link rel="canonical" href="https://sindly.netlify.app/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="K Sindhu — Portfolio">
   <meta property="og:description" content="AI/ML Engineering Student &amp; Full Stack Developer">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sindly.netlify.app/">
+
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
