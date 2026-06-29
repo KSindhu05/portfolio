@@ -1045,14 +1045,12 @@
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
 
-        // Copy all classes and styles from original img
         canvas.className = avatarImg.className;
         canvas.setAttribute('role', 'img');
         canvas.setAttribute('aria-label', avatarImg.alt || 'Profile Picture');
         canvas.style.cssText = avatarImg.style.cssText;
         canvas.draggable = false;
 
-        // Prevent any interaction on the canvas
         canvas.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
         canvas.addEventListener('dragstart', (e) => { e.preventDefault(); });
         canvas.addEventListener('touchstart', (e) => { e.preventDefault(); }, { passive: false });
@@ -1078,21 +1076,20 @@
     shield.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
     shield.addEventListener('dragstart', (e) => { e.preventDefault(); });
 
-    // Make sure avatar container is positioned for the shield
     const containerPosition = window.getComputedStyle(avatarContainer).position;
     if (containerPosition === 'static') {
       avatarContainer.style.position = 'relative';
     }
     avatarContainer.appendChild(shield);
 
-    // ---- 3. Block right-click only on avatar area (not whole page) ----
+    // ---- 3. Block right-click only on avatar area ----
     avatarContainer.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       e.stopPropagation();
       return false;
     });
 
-    // ---- 4. Avatar-only overlay for screenshot attempts ----
+    // ---- 4. Avatar-only overlay ----
     const avatarOverlay = document.createElement('div');
     avatarOverlay.style.cssText = `
       position: absolute;
@@ -1116,11 +1113,62 @@
     avatarOverlay.innerHTML = '<i class="fas fa-shield-alt" style="font-size:1.2rem;margin-right:6px;"></i> Protected';
     avatarContainer.appendChild(avatarOverlay);
 
+    // ---- 5. DROP-DOWN TOAST NOTIFICATION ----
+    const toast = document.createElement('div');
+    toast.id = 'screenshot-toast';
+    toast.style.cssText = `
+      position: fixed;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99999999;
+      background: linear-gradient(135deg, rgba(11, 17, 32, 0.97), rgba(30, 41, 59, 0.97));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #38bdf8;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+    `;
+    toast.innerHTML = `
+      <i class="fas fa-shield-alt" style="font-size: 1.3rem; color: #38bdf8;"></i>
+      <span>Screenshot is prohibited</span>
+    `;
+    document.body.appendChild(toast);
+
     let restoreTimeout;
+    let toastTimeout;
+    let isToastVisible = false;
+
+    function showToast() {
+      if (isToastVisible) return;
+      isToastVisible = true;
+      toast.style.top = '24px';
+      toast.style.opacity = '1';
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.style.top = '-80px';
+        toast.style.opacity = '0';
+        isToastVisible = false;
+      }, 3000);
+    }
 
     function hideAvatar() {
       avatarOverlay.style.opacity = '1';
       avatarOverlay.style.pointerEvents = 'all';
+      showToast();
     }
 
     function showAvatar() {
@@ -1128,9 +1176,8 @@
       avatarOverlay.style.pointerEvents = 'none';
     }
 
-    // ---- 5. Desktop: PrintScreen / snipping tool / Win+Shift+S ----
+    // ---- 6. Desktop: PrintScreen / snipping tool / Win+Shift+S ----
     document.addEventListener('keydown', (e) => {
-      // PrintScreen key
       if (e.key === 'PrintScreen') {
         hideAvatar();
         clearTimeout(restoreTimeout);
@@ -1150,8 +1197,7 @@
       }
     });
 
-    // ---- 6. Window blur/focus — snipping tools steal focus ----
-    // Only hides the avatar, NOT the whole page
+    // ---- 7. Window blur/focus — snipping tools steal focus ----
     window.addEventListener('blur', () => {
       hideAvatar();
       clearTimeout(restoreTimeout);
@@ -1162,7 +1208,7 @@
       restoreTimeout = setTimeout(showAvatar, 500);
     });
 
-    // ---- 7. Visibility change — hides avatar during tab switch/capture ----
+    // ---- 8. Visibility change ----
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
         hideAvatar();
@@ -1174,7 +1220,7 @@
       }
     });
 
-    // ---- 8. Print protection (avatar only) ----
+    // ---- 9. Print protection (avatar only) ----
     const printStyle = document.createElement('style');
     printStyle.textContent = `
       @media print {
@@ -1198,7 +1244,7 @@
     window.addEventListener('beforeprint', hideAvatar);
     window.addEventListener('afterprint', showAvatar);
 
-    // ---- 9. Disable image drag/save for any remaining images ----
+    // ---- 10. Disable image drag/save ----
     document.querySelectorAll('.hero-avatar-container img, .hero-avatar-container canvas').forEach((el) => {
       el.setAttribute('draggable', 'false');
       el.style.webkitTouchCallout = 'none';

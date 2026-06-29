@@ -946,9 +946,9 @@ section {
   transform-style: preserve-3d;
   will-change: transform, left, top;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  transition: 
-    border-color 0.3s ease, 
-    box-shadow 0.3s ease, 
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
     background 0.3s ease;
 }
 
@@ -1039,8 +1039,8 @@ section {
 .skill-node:hover {
   background: rgba(15, 23, 42, 0.7);
   border-color: color-mix(in srgb, var(--node-color) 40%, rgba(255, 255, 255, 0.2));
-  box-shadow: 
-    0 15px 30px rgba(0, 0, 0, 0.5), 
+  box-shadow:
+    0 15px 30px rgba(0, 0, 0, 0.5),
     0 0 20px color-mix(in srgb, var(--node-color) 25%, transparent);
   z-index: 25;
 }
@@ -1066,11 +1066,14 @@ section {
 
 /* Animations */
 @keyframes pulse-core {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.9;
     filter: drop-shadow(0 0 20px var(--accent-blue));
   }
+
   50% {
     transform: scale(1.08);
     opacity: 1;
@@ -1083,6 +1086,7 @@ section {
     transform: scale(0.6);
     opacity: 0.8;
   }
+
   100% {
     transform: scale(2.2);
     opacity: 0;
@@ -1093,6 +1097,7 @@ section {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -1102,6 +1107,7 @@ section {
   from {
     transform: rotate(360deg);
   }
+
   to {
     transform: rotate(0deg);
   }
@@ -1111,6 +1117,7 @@ section {
   from {
     stroke-dashoffset: 20;
   }
+
   to {
     stroke-dashoffset: 0;
   }
@@ -1168,7 +1175,7 @@ section {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .skill-node {
     padding: 14px;
   }
@@ -4299,6 +4306,7 @@ body.theme-terminal .skill-tags {
     animation: none !important;
   }
 }
+
 /* ===== ADDITIONAL SKILLS THEME OVERRIDES ===== */
 body.light-theme .skill-node {
   background: rgba(255, 255, 255, 0.75) !important;
@@ -4319,6 +4327,7 @@ body.light-theme .skill-node .node-name {
 body.light-theme .skill-node .node-desc {
   color: #475569 !important;
 }
+
 body.light-theme .skill-card {
   background: rgba(255, 255, 255, 0.6) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
@@ -4386,6 +4395,7 @@ body.theme-aurora .skill-card:hover {
 
 /* ===== ACCESSIBILITY: Respect reduced motion preferences ===== */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

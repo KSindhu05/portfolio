@@ -145,7 +145,7 @@
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       const i = row * COLS + col;
-      
+
       // Add random jitter to prevent Moire/overlapping grid patterns when camera orbits
       const jitterX = (Math.random() - 0.5) * SPACING * 0.8;
       const jitterZ = (Math.random() - 0.5) * SPACING * 0.8;

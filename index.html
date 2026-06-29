@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <script>
     // Global error listener — logs to console instead of blocking with alert()
-    window.onerror = function(msg, url, line, col, err) {
+    window.onerror = function (msg, url, line, col, err) {
       console.error("JS Error:", msg, "at", url, line + ":" + col, err);
       return false;
     };
@@ -17,7 +17,8 @@
   <meta name="description"
     content="Portfolio of K Sindhu — AI/ML Engineering Student, Full Stack Developer, and passionate learner building intelligent solutions through code and innovation.">
   <meta name="author" content="K Sindhu">
-  <meta name="keywords" content="K Sindhu, AI ML developer, portfolio, full stack developer, machine learning, engineering student, web developer">
+  <meta name="keywords"
+    content="K Sindhu, AI ML developer, portfolio, full stack developer, machine learning, engineering student, web developer">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0B1120">
   <link rel="canonical" href="https://sindly.netlify.app/">
@@ -114,7 +115,9 @@
       <div class="hero-avatar-wrapper reveal-left">
         <div class="hero-avatar-container">
           <div class="avatar-glow"></div>
-          <img src="assets/profile.png" alt="K Sindhu - AI/ML Developer" class="hero-avatar" oncontextmenu="return false;" draggable="false" style="pointer-events: none; user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none;">
+          <img src="assets/profile.png" alt="K Sindhu - AI/ML Developer" class="hero-avatar"
+            oncontextmenu="return false;" draggable="false"
+            style="pointer-events: none; user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none;">
           <div class="avatar-ring avatar-ring-1"></div>
           <div class="avatar-ring avatar-ring-2"></div>
           <div class="avatar-ring avatar-ring-3"></div>
@@ -271,676 +274,704 @@
       </div>
     </div>
   </section>
-    <!-- ============================================================
+  <!-- ============================================================
        SKILLS SECTION — AI COMMAND CENTER GALAXY
        ============================================================ -->
-    <section id="skills">
-      <!-- Neural Network Canvas Background -->
-      <canvas id="neural-canvas"></canvas>
+  <section id="skills">
+    <!-- Neural Network Canvas Background -->
+    <canvas id="neural-canvas"></canvas>
 
-      <div class="container">
-        <h2 class="section-title reveal">
-          My Technical <span class="gradient-text">Arsenal</span>
-        </h2>
-        <p class="section-subtitle reveal">
-          Transforming ideas into intelligent digital experiences through modern technologies, creativity, and continuous learning.
-        </p>
+    <div class="container">
+      <h2 class="section-title reveal">
+        My Technical <span class="gradient-text">Arsenal</span>
+      </h2>
+      <p class="section-subtitle reveal">
+        Transforming ideas into intelligent digital experiences through modern technologies, creativity, and continuous
+        learning.
+      </p>
 
-        <!-- Skills Galaxy Orbital System -->
-        <div class="skills-cosmos" id="skills-cosmos">
+      <!-- Skills Galaxy Orbital System -->
+      <div class="skills-cosmos" id="skills-cosmos">
 
-          <!-- AI Energy Core -->
-          <div class="ai-core" id="ai-core">
-            <div class="core-orb"></div>
-            <div class="core-pulse"></div>
-            <div class="core-pulse core-pulse-2"></div>
-            <div class="core-ring core-ring-1"></div>
-            <div class="core-ring core-ring-2"></div>
-            <div class="core-ring core-ring-3"></div>
-            <div class="core-label">AI<br>Core</div>
-          </div>
-
-          <!-- Orbit Paths (visual guides) -->
-          <div class="orbit-path orbit-path-inner"></div>
-          <div class="orbit-path orbit-path-outer"></div>
-
-          <!-- Light Beam Container (for hover connections) -->
-          <svg class="skill-beams" id="skill-beams" aria-hidden="true">
-            <line class="beam-line" id="beam-line" x1="50%" y1="50%" x2="50%" y2="50%"/>
-          </svg>
-
-          <!-- ===== INNER ORBIT — Programming Languages ===== -->
-          <div class="skill-node" data-orbit="inner" data-index="0" data-level="advanced" style="--node-color: #3776AB; --float-delay: 0s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-python"></i></div>
-              <h4 class="node-name">Python</h4>
-              <p class="node-desc">Building intelligent automation, AI solutions, and backend applications.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="inner" data-index="1" data-level="advanced" style="--node-color: #ED8B00; --float-delay: 0.5s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-java"></i></div>
-              <h4 class="node-name">Java</h4>
-              <p class="node-desc">Developing robust object-oriented applications with clean architecture.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="inner" data-index="2" data-level="advanced" style="--node-color: #F7DF1E; --float-delay: 1s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-js-square"></i></div>
-              <h4 class="node-name">JavaScript</h4>
-              <p class="node-desc">Creating dynamic and interactive web experiences.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="inner" data-index="3" data-level="advanced" style="--node-color: #E34F26; --float-delay: 1.5s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-html5"></i></div>
-              <h4 class="node-name">HTML5</h4>
-              <p class="node-desc">Crafting semantic, accessible, and SEO-optimized web structures.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="inner" data-index="4" data-level="advanced" style="--node-color: #1572B6; --float-delay: 2s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-css3-alt"></i></div>
-              <h4 class="node-name">CSS3</h4>
-              <p class="node-desc">Designing beautiful, responsive layouts with modern techniques.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="inner" data-index="5" data-level="intermediate" style="--node-color: #336791; --float-delay: 2.5s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fas fa-database"></i></div>
-              <h4 class="node-name">SQL</h4>
-              <p class="node-desc">Managing and querying relational databases efficiently.</p>
-              <span class="node-badge">Intermediate</span>
-            </div>
-          </div>
-
-          <!-- ===== OUTER ORBIT — Frameworks & Tools + Learning ===== -->
-          <div class="skill-node" data-orbit="outer" data-index="0" data-level="intermediate" style="--node-color: #61DAFB; --float-delay: 0.3s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-react"></i></div>
-              <h4 class="node-name">React</h4>
-              <p class="node-desc">Building scalable, fast, and responsive user interfaces.</p>
-              <span class="node-badge">Intermediate</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="1" data-level="intermediate" style="--node-color: #06B6D4; --float-delay: 0.8s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fas fa-wind"></i></div>
-              <h4 class="node-name">Tailwind CSS</h4>
-              <p class="node-desc">Designing elegant, modern, and responsive layouts.</p>
-              <span class="node-badge">Intermediate</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="2" data-level="advanced" style="--node-color: #F05033; --float-delay: 1.3s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-git-alt"></i></div>
-              <h4 class="node-name">Git</h4>
-              <p class="node-desc">Version control and collaborative software development.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="3" data-level="advanced" style="--node-color: #F1F1F1; --float-delay: 1.8s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fab fa-github"></i></div>
-              <h4 class="node-name">GitHub</h4>
-              <p class="node-desc">Managing projects, repositories, and team collaboration.</p>
-              <span class="node-badge">Advanced</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="4" data-level="learning" style="--node-color: #8B5CF6; --float-delay: 2.3s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fas fa-brain"></i></div>
-              <h4 class="node-name">Machine Learning</h4>
-              <p class="node-desc">Currently exploring predictive models and intelligent systems.</p>
-              <span class="node-badge badge-learning">Currently Learning</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="5" data-level="learning" style="--node-color: #EC4899; --float-delay: 2.8s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fas fa-robot"></i></div>
-              <h4 class="node-name">AI</h4>
-              <p class="node-desc">Learning AI concepts for building smart applications.</p>
-              <span class="node-badge badge-learning">Currently Learning</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="6" data-level="learning" style="--node-color: #22C55E; --float-delay: 3.3s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fas fa-sitemap"></i></div>
-              <h4 class="node-name">DSA</h4>
-              <p class="node-desc">Strengthening problem-solving and coding efficiency.</p>
-              <span class="node-badge badge-learning">Currently Learning</span>
-            </div>
-          </div>
-
-          <div class="skill-node" data-orbit="outer" data-index="7" data-level="learning" style="--node-color: #F59E0B; --float-delay: 3.8s;">
-            <div class="node-glow"></div>
-            <div class="node-inner">
-              <div class="node-icon"><i class="fas fa-plug"></i></div>
-              <h4 class="node-name">REST APIs</h4>
-              <p class="node-desc">Building and integrating scalable backend services.</p>
-              <span class="node-badge badge-learning">Currently Learning</span>
-            </div>
-          </div>
-
+        <!-- AI Energy Core -->
+        <div class="ai-core" id="ai-core">
+          <div class="core-orb"></div>
+          <div class="core-pulse"></div>
+          <div class="core-pulse core-pulse-2"></div>
+          <div class="core-ring core-ring-1"></div>
+          <div class="core-ring core-ring-2"></div>
+          <div class="core-ring core-ring-3"></div>
+          <div class="core-label">AI<br>Core</div>
         </div>
+
+        <!-- Orbit Paths (visual guides) -->
+        <div class="orbit-path orbit-path-inner"></div>
+        <div class="orbit-path orbit-path-outer"></div>
+
+        <!-- Light Beam Container (for hover connections) -->
+        <svg class="skill-beams" id="skill-beams" aria-hidden="true">
+          <line class="beam-line" id="beam-line" x1="50%" y1="50%" x2="50%" y2="50%" />
+        </svg>
+
+        <!-- ===== INNER ORBIT — Programming Languages ===== -->
+        <div class="skill-node" data-orbit="inner" data-index="0" data-level="advanced"
+          style="--node-color: #3776AB; --float-delay: 0s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-python"></i></div>
+            <h4 class="node-name">Python</h4>
+            <p class="node-desc">Building intelligent automation, AI solutions, and backend applications.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="inner" data-index="1" data-level="advanced"
+          style="--node-color: #ED8B00; --float-delay: 0.5s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-java"></i></div>
+            <h4 class="node-name">Java</h4>
+            <p class="node-desc">Developing robust object-oriented applications with clean architecture.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="inner" data-index="2" data-level="advanced"
+          style="--node-color: #F7DF1E; --float-delay: 1s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-js-square"></i></div>
+            <h4 class="node-name">JavaScript</h4>
+            <p class="node-desc">Creating dynamic and interactive web experiences.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="inner" data-index="3" data-level="advanced"
+          style="--node-color: #E34F26; --float-delay: 1.5s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-html5"></i></div>
+            <h4 class="node-name">HTML5</h4>
+            <p class="node-desc">Crafting semantic, accessible, and SEO-optimized web structures.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="inner" data-index="4" data-level="advanced"
+          style="--node-color: #1572B6; --float-delay: 2s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-css3-alt"></i></div>
+            <h4 class="node-name">CSS3</h4>
+            <p class="node-desc">Designing beautiful, responsive layouts with modern techniques.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="inner" data-index="5" data-level="intermediate"
+          style="--node-color: #336791; --float-delay: 2.5s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fas fa-database"></i></div>
+            <h4 class="node-name">SQL</h4>
+            <p class="node-desc">Managing and querying relational databases efficiently.</p>
+            <span class="node-badge">Intermediate</span>
+          </div>
+        </div>
+
+        <!-- ===== OUTER ORBIT — Frameworks & Tools + Learning ===== -->
+        <div class="skill-node" data-orbit="outer" data-index="0" data-level="intermediate"
+          style="--node-color: #61DAFB; --float-delay: 0.3s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-react"></i></div>
+            <h4 class="node-name">React</h4>
+            <p class="node-desc">Building scalable, fast, and responsive user interfaces.</p>
+            <span class="node-badge">Intermediate</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="1" data-level="intermediate"
+          style="--node-color: #06B6D4; --float-delay: 0.8s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fas fa-wind"></i></div>
+            <h4 class="node-name">Tailwind CSS</h4>
+            <p class="node-desc">Designing elegant, modern, and responsive layouts.</p>
+            <span class="node-badge">Intermediate</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="2" data-level="advanced"
+          style="--node-color: #F05033; --float-delay: 1.3s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-git-alt"></i></div>
+            <h4 class="node-name">Git</h4>
+            <p class="node-desc">Version control and collaborative software development.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="3" data-level="advanced"
+          style="--node-color: #F1F1F1; --float-delay: 1.8s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fab fa-github"></i></div>
+            <h4 class="node-name">GitHub</h4>
+            <p class="node-desc">Managing projects, repositories, and team collaboration.</p>
+            <span class="node-badge">Advanced</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="4" data-level="learning"
+          style="--node-color: #8B5CF6; --float-delay: 2.3s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fas fa-brain"></i></div>
+            <h4 class="node-name">Machine Learning</h4>
+            <p class="node-desc">Currently exploring predictive models and intelligent systems.</p>
+            <span class="node-badge badge-learning">Currently Learning</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="5" data-level="learning"
+          style="--node-color: #EC4899; --float-delay: 2.8s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fas fa-robot"></i></div>
+            <h4 class="node-name">AI</h4>
+            <p class="node-desc">Learning AI concepts for building smart applications.</p>
+            <span class="node-badge badge-learning">Currently Learning</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="6" data-level="learning"
+          style="--node-color: #22C55E; --float-delay: 3.3s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fas fa-sitemap"></i></div>
+            <h4 class="node-name">DSA</h4>
+            <p class="node-desc">Strengthening problem-solving and coding efficiency.</p>
+            <span class="node-badge badge-learning">Currently Learning</span>
+          </div>
+        </div>
+
+        <div class="skill-node" data-orbit="outer" data-index="7" data-level="learning"
+          style="--node-color: #F59E0B; --float-delay: 3.8s;">
+          <div class="node-glow"></div>
+          <div class="node-inner">
+            <div class="node-icon"><i class="fas fa-plug"></i></div>
+            <h4 class="node-name">REST APIs</h4>
+            <p class="node-desc">Building and integrating scalable backend services.</p>
+            <span class="node-badge badge-learning">Currently Learning</span>
+          </div>
+        </div>
+
       </div>
-    </section>
-    <!-- ============================================================
+    </div>
+  </section>
+  <!-- ============================================================
        EDUCATION TIMELINE
        ============================================================ -->
-    <section id="education">
-      <div class="container">
-        <h2 class="section-title reveal">
-          Education &amp; <span class="gradient-text">Experience</span>
-        </h2>
-        <p class="section-subtitle reveal">
-          My academic path and professional experience — a journey of continuous growth and discovery.
-        </p>
+  <section id="education">
+    <div class="container">
+      <h2 class="section-title reveal">
+        Education &amp; <span class="gradient-text">Experience</span>
+      </h2>
+      <p class="section-subtitle reveal">
+        My academic path and professional experience — a journey of continuous growth and discovery.
+      </p>
 
-        <div class="timeline">
-          <div class="timeline-item reveal">
-            <div class="timeline-node"></div>
-            <div class="glass-card timeline-card">
-              <span class="timeline-date"><i class="fas fa-calendar-alt"></i> Completed: 2026</span>
-              <h3>Diploma in Computer Science and Engineering (C-20 Scheme)</h3>
-              <h4 style="color: var(--accent-blue); font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm);">Sanjay
-                Gandhi Polytechnic, Bellary</h4>
-              <p>
-                Built a strong foundation in programming, data structures, algorithms, and computer systems. Graduated
-                with top marks and hands-on technical training.
-              </p>
-              <span class="timeline-status status-completed">
-                <i class="fas fa-award"></i> CGPA: 9.96 / 10 (Distinction) | 92.1%
-              </span>
-            </div>
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-node"></div>
+          <div class="glass-card timeline-card">
+            <span class="timeline-date"><i class="fas fa-calendar-alt"></i> Completed: 2026</span>
+            <h3>Diploma in Computer Science and Engineering (C-20 Scheme)</h3>
+            <h4 style="color: var(--accent-blue); font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm);">Sanjay
+              Gandhi Polytechnic, Bellary</h4>
+            <p>
+              Built a strong foundation in programming, data structures, algorithms, and computer systems. Graduated
+              with top marks and hands-on technical training.
+            </p>
+            <span class="timeline-status status-completed">
+              <i class="fas fa-award"></i> CGPA: 9.96 / 10 (Distinction) | 92.1%
+            </span>
           </div>
+        </div>
 
-          <div class="timeline-item reveal">
-            <div class="timeline-node"></div>
-            <div class="glass-card timeline-card">
-              <span class="timeline-date"><i class="fas fa-calendar-alt"></i> Currently Pursuing</span>
-              <h3>B.Tech. in Artificial Intelligence &amp; Machine Learning</h3>
-              <p>
-                Deepening expertise in AI models, neural networks, machine learning algorithms, and advanced web
-                technologies.
-              </p>
-              <span class="timeline-status status-current">
-                <i class="fas fa-spinner fa-pulse"></i> In Progress
-              </span>
-            </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-node"></div>
+          <div class="glass-card timeline-card">
+            <span class="timeline-date"><i class="fas fa-calendar-alt"></i> Currently Pursuing</span>
+            <h3>B.Tech. in Artificial Intelligence &amp; Machine Learning</h3>
+            <p>
+              Deepening expertise in AI models, neural networks, machine learning algorithms, and advanced web
+              technologies.
+            </p>
+            <span class="timeline-status status-current">
+              <i class="fas fa-spinner fa-pulse"></i> In Progress
+            </span>
           </div>
+        </div>
 
-          <div class="timeline-item reveal">
-            <div class="timeline-node"></div>
-            <div class="glass-card timeline-card">
-              <span class="timeline-date"><i class="fas fa-briefcase"></i> Jan 3, 2026 - Apr 6, 2026</span>
-              <h3>Java Full Stack Intern</h3>
-              <h4 style="color: var(--accent-blue); font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm);">Techmiya Solutions India Pvt. Ltd.</h4>
-              <p>
-                Successfully completed a comprehensive internship program focusing on Java Full Stack development. Gained hands-on experience in building applications, adhering to organizational policies, and meeting project goals.
-              </p>
-              <div style="margin-top: 15px;">
-                <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-techmiya" onclick="openCertificateModal('cert-techmiya')" style="font-size: 0.85rem; padding: 8px 16px;">
-                  <i class="fas fa-certificate"></i> View Internship Certificate
-                </button>
-              </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-node"></div>
+          <div class="glass-card timeline-card">
+            <span class="timeline-date"><i class="fas fa-briefcase"></i> Jan 3, 2026 - Apr 6, 2026</span>
+            <h3>Java Full Stack Intern</h3>
+            <h4 style="color: var(--accent-blue); font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm);">Techmiya
+              Solutions India Pvt. Ltd.</h4>
+            <p>
+              Successfully completed a comprehensive internship program focusing on Java Full Stack development. Gained
+              hands-on experience in building applications, adhering to organizational policies, and meeting project
+              goals.
+            </p>
+            <div style="margin-top: 15px;">
+              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-techmiya"
+                onclick="openCertificateModal('cert-techmiya')" style="font-size: 0.85rem; padding: 8px 16px;">
+                <i class="fas fa-certificate"></i> View Internship Certificate
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ============================================================
+  <!-- ============================================================
        CERTIFICATIONS SECTION
        ============================================================ -->
-    <section id="certificates">
-      <div class="container">
-        <h2 class="section-title reveal">
-          Professional <span class="gradient-text">Certifications</span>
-        </h2>
-        <p class="section-subtitle reveal">
-          Industry credentials validating my skills in AI fundamentals, cybersecurity, and client relations.
-        </p>
+  <section id="certificates">
+    <div class="container">
+      <h2 class="section-title reveal">
+        Professional <span class="gradient-text">Certifications</span>
+      </h2>
+      <p class="section-subtitle reveal">
+        Industry credentials validating my skills in AI fundamentals, cybersecurity, and client relations.
+      </p>
 
-        <div class="certificates-grid reveal-stagger">
-          <!-- Certificate 1: AI Fundamentals -->
-          <div class="glass-card certificate-card">
-            <div class="cert-issuer">
-              <span class="issuer-badge ibm"><i class="fab fa-ibm"></i> IBM SkillsBuild</span>
-            </div>
-            <div class="cert-image-preview">
-              <img src="assets/cert_ai_fundamentals.png" alt="AI Fundamentals Certificate Preview" loading="lazy">
-            </div>
-            <h3 class="cert-title">Artificial Intelligence Fundamentals</h3>
-            <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Aug 01, 2025</p>
-            <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-ai" onclick="openCertificateModal('cert-ai')">
-                <i class="fas fa-eye"></i> View Certificate
-              </button>
-              <a href="https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb" target="_blank"
-                rel="noopener" class="btn btn-sm btn-secondary">
-                <i class="fas fa-external-link-alt"></i> Verify
-              </a>
-            </div>
+      <div class="certificates-grid reveal-stagger">
+        <!-- Certificate 1: AI Fundamentals -->
+        <div class="glass-card certificate-card">
+          <div class="cert-issuer">
+            <span class="issuer-badge ibm"><i class="fab fa-ibm"></i> IBM SkillsBuild</span>
           </div>
-
-          <!-- Certificate 2: Threat Modeling -->
-          <div class="glass-card certificate-card">
-            <div class="cert-issuer">
-              <span class="issuer-badge infosys"><i class="fas fa-shield-alt"></i> Infosys Springboard</span>
-            </div>
-            <div class="cert-image-preview">
-              <img src="assets/cert_threat_modeling.png" alt="Threat Modeling Certificate Preview" loading="lazy">
-            </div>
-            <h3 class="cert-title">Threat Modeling</h3>
-            <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 11, 2025</p>
-            <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-threat" onclick="openCertificateModal('cert-threat')">
-                <i class="fas fa-eye"></i> View Certificate
-              </button>
-              <a href="https://verify.onwingspan.com" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
-                <i class="fas fa-external-link-alt"></i> Verify
-              </a>
-            </div>
+          <div class="cert-image-preview">
+            <img src="assets/cert_ai_fundamentals.png" alt="AI Fundamentals Certificate Preview" loading="lazy">
           </div>
-
-          <!-- Certificate 3: Customer Engagement Comm -->
-          <div class="glass-card certificate-card">
-            <div class="cert-issuer">
-              <span class="issuer-badge ibm"><i class="fab fa-ibm"></i> IBM SkillsBuild</span>
-            </div>
-            <div class="cert-image-preview">
-              <img src="assets/cert_customer_comm.png" alt="Customer Engagement Communication Certificate Preview" loading="lazy">
-            </div>
-            <h3 class="cert-title">Customer Engagement: Communication &amp; Personality Dynamics</h3>
-            <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 31, 2025</p>
-            <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-comm" onclick="openCertificateModal('cert-comm')">
-                <i class="fas fa-eye"></i> View Certificate
-              </button>
-              <a href="https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca" target="_blank"
-                rel="noopener" class="btn btn-sm btn-secondary">
-                <i class="fas fa-external-link-alt"></i> Verify
-              </a>
-            </div>
+          <h3 class="cert-title">Artificial Intelligence Fundamentals</h3>
+          <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Aug 01, 2025</p>
+          <div class="cert-actions">
+            <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-ai"
+              onclick="openCertificateModal('cert-ai')">
+              <i class="fas fa-eye"></i> View Certificate
+            </button>
+            <a href="https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb" target="_blank" rel="noopener"
+              class="btn btn-sm btn-secondary">
+              <i class="fas fa-external-link-alt"></i> Verify
+            </a>
           </div>
+        </div>
 
-          <!-- Certificate 4: Customer Engagement Problem Solving -->
-          <div class="glass-card certificate-card">
-            <div class="cert-issuer">
-              <span class="issuer-badge ibm"><i class="fab fa-ibm"></i> IBM SkillsBuild</span>
-            </div>
-            <div class="cert-image-preview">
-              <img src="assets/cert_customer_solving.png" alt="Customer Engagement Problem Solving Certificate Preview" loading="lazy">
-            </div>
-            <h3 class="cert-title">Customer Engagement: Problem Solving &amp; Process Controls</h3>
-            <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 31, 2025</p>
-            <div class="cert-actions">
-              <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-solving" onclick="openCertificateModal('cert-solving')">
-                <i class="fas fa-eye"></i> View Certificate
-              </button>
-              <a href="https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb" target="_blank"
-                rel="noopener" class="btn btn-sm btn-secondary">
-                <i class="fas fa-external-link-alt"></i> Verify
-              </a>
-            </div>
+        <!-- Certificate 2: Threat Modeling -->
+        <div class="glass-card certificate-card">
+          <div class="cert-issuer">
+            <span class="issuer-badge infosys"><i class="fas fa-shield-alt"></i> Infosys Springboard</span>
+          </div>
+          <div class="cert-image-preview">
+            <img src="assets/cert_threat_modeling.png" alt="Threat Modeling Certificate Preview" loading="lazy">
+          </div>
+          <h3 class="cert-title">Threat Modeling</h3>
+          <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 11, 2025</p>
+          <div class="cert-actions">
+            <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-threat"
+              onclick="openCertificateModal('cert-threat')">
+              <i class="fas fa-eye"></i> View Certificate
+            </button>
+            <a href="https://verify.onwingspan.com" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
+              <i class="fas fa-external-link-alt"></i> Verify
+            </a>
+          </div>
+        </div>
+
+        <!-- Certificate 3: Customer Engagement Comm -->
+        <div class="glass-card certificate-card">
+          <div class="cert-issuer">
+            <span class="issuer-badge ibm"><i class="fab fa-ibm"></i> IBM SkillsBuild</span>
+          </div>
+          <div class="cert-image-preview">
+            <img src="assets/cert_customer_comm.png" alt="Customer Engagement Communication Certificate Preview"
+              loading="lazy">
+          </div>
+          <h3 class="cert-title">Customer Engagement: Communication &amp; Personality Dynamics</h3>
+          <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 31, 2025</p>
+          <div class="cert-actions">
+            <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-comm"
+              onclick="openCertificateModal('cert-comm')">
+              <i class="fas fa-eye"></i> View Certificate
+            </button>
+            <a href="https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca" target="_blank" rel="noopener"
+              class="btn btn-sm btn-secondary">
+              <i class="fas fa-external-link-alt"></i> Verify
+            </a>
+          </div>
+        </div>
+
+        <!-- Certificate 4: Customer Engagement Problem Solving -->
+        <div class="glass-card certificate-card">
+          <div class="cert-issuer">
+            <span class="issuer-badge ibm"><i class="fab fa-ibm"></i> IBM SkillsBuild</span>
+          </div>
+          <div class="cert-image-preview">
+            <img src="assets/cert_customer_solving.png" alt="Customer Engagement Problem Solving Certificate Preview"
+              loading="lazy">
+          </div>
+          <h3 class="cert-title">Customer Engagement: Problem Solving &amp; Process Controls</h3>
+          <p class="cert-date"><i class="far fa-calendar-check"></i> Issued: Jul 31, 2025</p>
+          <div class="cert-actions">
+            <button class="btn btn-sm btn-primary view-cert-btn" data-cert="cert-solving"
+              onclick="openCertificateModal('cert-solving')">
+              <i class="fas fa-eye"></i> View Certificate
+            </button>
+            <a href="https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb" target="_blank" rel="noopener"
+              class="btn btn-sm btn-secondary">
+              <i class="fas fa-external-link-alt"></i> Verify
+            </a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ============================================================
+  <!-- ============================================================
        PROJECTS SECTION
        ============================================================ -->
-    <section id="projects">
-      <div class="container">
-        <h2 class="section-title reveal">
-          Featured <span class="gradient-text">Projects</span>
-        </h2>
-        <p class="section-subtitle reveal">
-          A selection of projects that showcase my skills and passion for building meaningful software.
-        </p>
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title reveal">
+        Featured <span class="gradient-text">Projects</span>
+      </h2>
+      <p class="section-subtitle reveal">
+        A selection of projects that showcase my skills and passion for building meaningful software.
+      </p>
 
-        <div class="projects-grid reveal-stagger">
-          <!-- Project 1 -->
-          <div class="glass-card project-card reveal">
-            <div class="project-image">
-              <img src="assets/proj_chatbot.png" alt="College Enquiry Chatbot Website" loading="lazy">
+      <div class="projects-grid reveal-stagger">
+        <!-- Project 1 -->
+        <div class="glass-card project-card reveal">
+          <div class="project-image">
+            <img src="assets/proj_chatbot.png" alt="College Enquiry Chatbot Website" loading="lazy">
+          </div>
+          <div class="project-body">
+            <h3>College Enquiry Chatbot Website</h3>
+            <p>An AI-powered web chatbot designed to assist students and visitors by providing instant answers to
+              common college-related queries (admissions, fees, events, and courses).</p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Flask</span>
+              <span class="project-tag">MongoDB</span>
+              <span class="project-tag">AI/ML</span>
             </div>
-            <div class="project-body">
-              <h3>College Enquiry Chatbot Website</h3>
-              <p>An AI-powered web chatbot designed to assist students and visitors by providing instant answers to
-                common college-related queries (admissions, fees, events, and courses).</p>
-              <div class="project-tags">
-                <span class="project-tag">Python</span>
-                <span class="project-tag">Flask</span>
-                <span class="project-tag">MongoDB</span>
-                <span class="project-tag">AI/ML</span>
-              </div>
-              <div class="project-links">
-                <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
-                  <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="#" class="btn btn-sm btn-primary">
-                  <i class="fas fa-external-link-alt"></i> Live Demo
-                </a>
-              </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="#" class="btn btn-sm btn-primary">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
             </div>
           </div>
+        </div>
 
-          <!-- Project 2: CIE Management System -->
-          <div class="glass-card project-card reveal">
-            <div class="project-image">
-              <img src="assets/proj_cie.png" alt="CIE Management System" loading="lazy">
+        <!-- Project 2: CIE Management System -->
+        <div class="glass-card project-card reveal">
+          <div class="project-image">
+            <img src="assets/proj_cie.png" alt="CIE Management System" loading="lazy">
+          </div>
+          <div class="project-body">
+            <h3>CIE Management System</h3>
+            <p>A comprehensive academic evaluation platform built for colleges to track student attendance, record
+              internal marks, schedule assessments, and generate progress analytics reports.</p>
+            <div class="project-tags">
+              <span class="project-tag">Java</span>
+              <span class="project-tag">Spring Boot</span>
+              <span class="project-tag">SQL</span>
+              <span class="project-tag">Bootstrap</span>
             </div>
-            <div class="project-body">
-              <h3>CIE Management System</h3>
-              <p>A comprehensive academic evaluation platform built for colleges to track student attendance, record
-                internal marks, schedule assessments, and generate progress analytics reports.</p>
-              <div class="project-tags">
-                <span class="project-tag">Java</span>
-                <span class="project-tag">Spring Boot</span>
-                <span class="project-tag">SQL</span>
-                <span class="project-tag">Bootstrap</span>
-              </div>
-              <div class="project-links">
-                <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
-                  <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="#" class="btn btn-sm btn-primary">
-                  <i class="fas fa-external-link-alt"></i> Live Demo
-                </a>
-              </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="#" class="btn btn-sm btn-primary">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
             </div>
           </div>
+        </div>
 
 
-          <!-- Project 6 -->
-          <div class="glass-card project-card reveal">
-            <div class="project-image">
-              <img src="assets/proj_portfolio.png" alt="Personal Portfolio Website" loading="lazy">
+        <!-- Project 6 -->
+        <div class="glass-card project-card reveal">
+          <div class="project-image">
+            <img src="assets/proj_portfolio.png" alt="Personal Portfolio Website" loading="lazy">
+          </div>
+          <div class="project-body">
+            <h3>Personal Portfolio Website</h3>
+            <p>A premium, futuristic 3D portfolio featuring glassmorphism design, Three.js animations, and interactive
+              elements.</p>
+            <div class="project-tags">
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">Three.js</span>
             </div>
-            <div class="project-body">
-              <h3>Personal Portfolio Website</h3>
-              <p>A premium, futuristic 3D portfolio featuring glassmorphism design, Three.js animations, and interactive
-                elements.</p>
-              <div class="project-tags">
-                <span class="project-tag">HTML</span>
-                <span class="project-tag">CSS</span>
-                <span class="project-tag">JavaScript</span>
-                <span class="project-tag">Three.js</span>
-              </div>
-              <div class="project-links">
-                <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
-                  <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="#" class="btn btn-sm btn-primary">
-                  <i class="fas fa-external-link-alt"></i> Live Demo
-                </a>
-              </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-sm btn-secondary">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="#" class="btn btn-sm btn-primary">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </section>
-
-
-
-    <!-- ===== WAVE DIVIDER ===== -->
-    <div class="section-divider">
-      <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
-        <path d="M0,70 C320,20 640,90 960,40 C1120,10 1320,70 1440,50 L1440,100 L0,100 Z" fill="url(#wave-grad-3)" />
-        <defs>
-          <linearGradient id="wave-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgba(6,182,212,0.08)" />
-            <stop offset="50%" stop-color="rgba(56,189,248,0.08)" />
-            <stop offset="100%" stop-color="rgba(139,92,246,0.08)" />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
+  </section>
 
-    <!-- ============================================================
+
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="section-divider">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0,70 C320,20 640,90 960,40 C1120,10 1320,70 1440,50 L1440,100 L0,100 Z" fill="url(#wave-grad-3)" />
+      <defs>
+        <linearGradient id="wave-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(6,182,212,0.08)" />
+          <stop offset="50%" stop-color="rgba(56,189,248,0.08)" />
+          <stop offset="100%" stop-color="rgba(139,92,246,0.08)" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ============================================================
        CONTACT SECTION
        ============================================================ -->
-    <section id="contact">
-      <div class="container">
-        <h2 class="section-title reveal">
-          Get In <span class="gradient-text">Touch</span>
-        </h2>
-        <p class="section-subtitle reveal">
-          Have a project idea, collaboration, or just want to say hi? I'd love to hear from you.
-        </p>
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title reveal">
+        Get In <span class="gradient-text">Touch</span>
+      </h2>
+      <p class="section-subtitle reveal">
+        Have a project idea, collaboration, or just want to say hi? I'd love to hear from you.
+      </p>
 
-        <div class="contact-grid reveal">
-          <!-- Left: Info -->
-          <div class="contact-info reveal-left">
-            <h3>Let's Connect</h3>
-            <p>
-              I'm always open to discussing new projects, creative ideas, or opportunities to be part of something
-              great. Feel free to reach out!
-            </p>
-
-            <div class="contact-links">
-              <a href="mailto:ksindhu092006@gmail.com" class="contact-link-item">
-                <i class="fas fa-envelope"></i>
-                <span>ksindhu092006@gmail.com</span>
-              </a>
-              <a href="javascript:void(0)" class="contact-link-item" title="Phone number hidden for privacy">
-                <i class="fas fa-phone"></i>
-                <span>+91 98804xxxx31</span>
-              </a>
-              <a href="https://github.com/" target="_blank" rel="noopener" class="contact-link-item">
-                <i class="fab fa-github"></i>
-                <span>GitHub Profile</span>
-              </a>
-              <a href="https://linkedin.com/" target="_blank" rel="noopener" class="contact-link-item">
-                <i class="fab fa-linkedin-in"></i>
-                <span>LinkedIn Profile</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Right: Form -->
-          <div class="reveal-right">
-            <form id="contact-form" class="contact-form">
-              <div class="form-group">
-                <input type="text" name="name" id="form-name" placeholder="Your Name" required>
-                <label for="form-name">Name</label>
-              </div>
-              <div class="form-group">
-                <input type="email" name="email" id="form-email" placeholder="Your Email" required>
-                <label for="form-email">Email</label>
-              </div>
-              <div class="form-group">
-                <input type="text" name="subject" id="form-subject" placeholder="Subject" required>
-                <label for="form-subject">Subject</label>
-              </div>
-              <div class="form-group">
-                <textarea name="message" id="form-message" placeholder="Your Message" rows="5" required></textarea>
-                <label for="form-message">Message</label>
-              </div>
-
-              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                <i class="fas fa-paper-plane"></i> Send Message
-              </button>
-
-              <div id="form-status" class="form-status"></div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-       FOOTER
-       ============================================================ -->
-    <footer>
-      <div class="container">
-        <div class="footer-content">
-          <p class="footer-text">
-            &copy; 2026 <span>K Sindhu</span>. Designed with passion and innovation.
+      <div class="contact-grid reveal">
+        <!-- Left: Info -->
+        <div class="contact-info reveal-left">
+          <h3>Let's Connect</h3>
+          <p>
+            I'm always open to discussing new projects, creative ideas, or opportunities to be part of something
+            great. Feel free to reach out!
           </p>
-          <div class="footer-links">
-            <a href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="https://linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="mailto:ksindhu092006@gmail.com" aria-label="Email">
+
+          <div class="contact-links">
+            <a href="mailto:ksindhu092006@gmail.com" class="contact-link-item">
               <i class="fas fa-envelope"></i>
+              <span>ksindhu092006@gmail.com</span>
+            </a>
+            <a href="javascript:void(0)" class="contact-link-item" title="Phone number hidden for privacy">
+              <i class="fas fa-phone"></i>
+              <span>+91 98804xxxx31</span>
+            </a>
+            <a href="https://github.com/" target="_blank" rel="noopener" class="contact-link-item">
+              <i class="fab fa-github"></i>
+              <span>GitHub Profile</span>
+            </a>
+            <a href="https://linkedin.com/" target="_blank" rel="noopener" class="contact-link-item">
+              <i class="fab fa-linkedin-in"></i>
+              <span>LinkedIn Profile</span>
             </a>
           </div>
         </div>
-      </div>
-    </footer>
 
-    <!-- ===== FLOATING RESUME DOWNLOAD BUTTON ===== -->
-    <a href="resume.html" target="_blank" id="floating-resume-btn" class="floating-resume-btn" title="View Resume">
-      <i class="fas fa-file-alt"></i>
-      <span>Resume</span>
-    </a>
+        <!-- Right: Form -->
+        <div class="reveal-right">
+          <form id="contact-form" class="contact-form">
+            <div class="form-group">
+              <input type="text" name="name" id="form-name" placeholder="Your Name" required>
+              <label for="form-name">Name</label>
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" id="form-email" placeholder="Your Email" required>
+              <label for="form-email">Email</label>
+            </div>
+            <div class="form-group">
+              <input type="text" name="subject" id="form-subject" placeholder="Subject" required>
+              <label for="form-subject">Subject</label>
+            </div>
+            <div class="form-group">
+              <textarea name="message" id="form-message" placeholder="Your Message" rows="5" required></textarea>
+              <label for="form-message">Message</label>
+            </div>
 
-    <!-- ===== CERTIFICATE MODAL ===== -->
-    <div id="cert-modal" class="cert-modal-overlay" style="display: none; z-index: 999999; opacity: 0; visibility: hidden;" onclick="if(event.target === this) closeCertificateModal()">
-      <div class="cert-modal-content" style="z-index: 1000000 !important; opacity: 1 !important; visibility: visible !important;">
-        <button class="cert-modal-close" onclick="closeCertificateModal()" aria-label="Close">&times;</button>
-        <div class="cert-modal-body" id="cert-modal-body"></div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+
+            <div id="form-status" class="form-status"></div>
+          </form>
+        </div>
       </div>
     </div>
+  </section>
 
-    <script>
-      (function() {
-        var certData = {
-          'cert-ai': {
-            issuer: 'IBM SkillsBuild',
-            title: 'Artificial Intelligence Fundamentals',
-            image: 'assets/cert_ai_fundamentals.png',
-            verifyUrl: 'https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb'
-          },
-          'cert-threat': {
-            issuer: 'Infosys Springboard',
-            title: 'Threat Modeling',
-            image: 'assets/cert_threat_modeling.png',
-            verifyUrl: 'https://verify.onwingspan.com'
-          },
-          'cert-comm': {
-            issuer: 'IBM SkillsBuild',
-            title: 'Customer Engagement: Communication and Personality Dynamics',
-            image: 'assets/cert_customer_comm.png',
-            verifyUrl: 'https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca'
-          },
-          'cert-solving': {
-            issuer: 'IBM SkillsBuild',
-            title: 'Customer Engagement: Problem Solving and Process Controls',
-            image: 'assets/cert_customer_solving.png',
-            verifyUrl: 'https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb'
-          },
-          'cert-techmiya': {
-            issuer: 'Techmiya Solutions India Pvt. Ltd.',
-            title: 'Java Full Stack Internship',
-            image: 'assets/techmiya_intership.png',
-            verifyUrl: ''
-          }
-        };
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">
+          &copy; 2026 <span>K Sindhu</span>. Designed with passion and innovation.
+        </p>
+        <div class="footer-links">
+          <a href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="mailto:ksindhu092006@gmail.com" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-        window.openCertificateModal = function(certId) {
-          var data = certData[certId];
-          if (!data) return;
+  <!-- ===== FLOATING RESUME DOWNLOAD BUTTON ===== -->
+  <a href="resume.html" target="_blank" id="floating-resume-btn" class="floating-resume-btn" title="View Resume">
+    <i class="fas fa-file-alt"></i>
+    <span>Resume</span>
+  </a>
 
-          var modal = document.getElementById('cert-modal');
-          var modalBody = document.getElementById('cert-modal-body');
-          if (!modal || !modalBody) return;
+  <!-- ===== CERTIFICATE MODAL ===== -->
+  <div id="cert-modal" class="cert-modal-overlay"
+    style="display: none; z-index: 999999; opacity: 0; visibility: hidden;"
+    onclick="if(event.target === this) closeCertificateModal()">
+    <div class="cert-modal-content"
+      style="z-index: 1000000 !important; opacity: 1 !important; visibility: visible !important;">
+      <button class="cert-modal-close" onclick="closeCertificateModal()" aria-label="Close">&times;</button>
+      <div class="cert-modal-body" id="cert-modal-body"></div>
+    </div>
+  </div>
 
-          var verifyBtn = data.verifyUrl 
-            ? '<a href="' + data.verifyUrl + '" target="_blank" rel="noopener" ' +
-              'style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:0.85rem;' +
-              'background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:8px;' +
-              'text-decoration:none;font-weight:500;">' +
-              '<i class="fas fa-external-link-alt"></i> Verify Credential' +
-              '</a>'
-            : '';
+  <script>
+    (function () {
+      var certData = {
+        'cert-ai': {
+          issuer: 'IBM SkillsBuild',
+          title: 'Artificial Intelligence Fundamentals',
+          image: 'assets/cert_ai_fundamentals.png',
+          verifyUrl: 'https://www.credly.com/badges/5eb28ca2-e766-4a08-8a99-d2ecd1fc67fb'
+        },
+        'cert-threat': {
+          issuer: 'Infosys Springboard',
+          title: 'Threat Modeling',
+          image: 'assets/cert_threat_modeling.png',
+          verifyUrl: 'https://verify.onwingspan.com'
+        },
+        'cert-comm': {
+          issuer: 'IBM SkillsBuild',
+          title: 'Customer Engagement: Communication and Personality Dynamics',
+          image: 'assets/cert_customer_comm.png',
+          verifyUrl: 'https://www.credly.com/badges/24b6bfb8-8d48-49f4-b385-642c15f1aeca'
+        },
+        'cert-solving': {
+          issuer: 'IBM SkillsBuild',
+          title: 'Customer Engagement: Problem Solving and Process Controls',
+          image: 'assets/cert_customer_solving.png',
+          verifyUrl: 'https://www.credly.com/badges/41f7cb00-a4aa-4645-8f69-d694a2476acb'
+        },
+        'cert-techmiya': {
+          issuer: 'Techmiya Solutions India Pvt. Ltd.',
+          title: 'Java Full Stack Internship',
+          image: 'assets/techmiya_intership.png',
+          verifyUrl: ''
+        }
+      };
 
-          modalBody.innerHTML =
-            '<div style="text-align:center;">' +
-              '<img src="' + data.image + '" alt="' + data.title + ' Certificate" ' +
-                   'style="width:100%;max-height:68vh;object-fit:contain;border-radius:10px;' +
-                   'border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.5);margin-bottom:20px;">' +
-              '<div style="display:flex;gap:15px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px;">' +
-                '<span style="color:#fff;font-size:0.95rem;font-weight:500;">' + data.title + ' — ' + data.issuer + '</span>' +
-                verifyBtn +
-              '</div>' +
-            '</div>';
+      window.openCertificateModal = function (certId) {
+        var data = certData[certId];
+        if (!data) return;
 
-          var content = modal.querySelector('.cert-modal-content');
-          if (content) {
-            content.style.transform = 'scale(1) translateY(0)';
-          }
+        var modal = document.getElementById('cert-modal');
+        var modalBody = document.getElementById('cert-modal-body');
+        if (!modal || !modalBody) return;
 
-          modal.style.display = 'flex';
-          modal.style.opacity = '1';
-          modal.style.visibility = 'visible';
-          modal.classList.add('active');
-          document.body.style.overflow = 'hidden';
-        };
+        var verifyBtn = data.verifyUrl
+          ? '<a href="' + data.verifyUrl + '" target="_blank" rel="noopener" ' +
+          'style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:0.85rem;' +
+          'background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:8px;' +
+          'text-decoration:none;font-weight:500;">' +
+          '<i class="fas fa-external-link-alt"></i> Verify Credential' +
+          '</a>'
+          : '';
 
-        window.closeCertificateModal = function() {
-          var modal = document.getElementById('cert-modal');
-          if (!modal) return;
-          modal.classList.remove('active');
-          modal.style.display = 'none';
-          modal.style.opacity = '0';
-          modal.style.visibility = 'hidden';
-          document.body.style.overflow = '';
+        modalBody.innerHTML =
+          '<div style="text-align:center;">' +
+          '<img src="' + data.image + '" alt="' + data.title + ' Certificate" ' +
+          'style="width:100%;max-height:68vh;object-fit:contain;border-radius:10px;' +
+          'border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.5);margin-bottom:20px;">' +
+          '<div style="display:flex;gap:15px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px;">' +
+          '<span style="color:#fff;font-size:0.95rem;font-weight:500;">' + data.title + ' — ' + data.issuer + '</span>' +
+          verifyBtn +
+          '</div>' +
+          '</div>';
 
-          var content = modal.querySelector('.cert-modal-content');
-          if (content) {
-            content.style.transform = 'scale(0.9) translateY(20px)';
-          }
-        };
+        var content = modal.querySelector('.cert-modal-content');
+        if (content) {
+          content.style.transform = 'scale(1) translateY(0)';
+        }
 
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') {
-            closeCertificateModal();
-          }
-        });
-      })();
-    </script>
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
 
-    <!-- ===== SCRIPTS ===== -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/scene.js?v=v9"></script>
-    <script src="js/main.js?v=v9"></script>
+      window.closeCertificateModal = function () {
+        var modal = document.getElementById('cert-modal');
+        if (!modal) return;
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        document.body.style.overflow = '';
+
+        var content = modal.querySelector('.cert-modal-content');
+        if (content) {
+          content.style.transform = 'scale(0.9) translateY(20px)';
+        }
+      };
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closeCertificateModal();
+        }
+      });
+    })();
+  </script>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/scene.js?v=v9"></script>
+  <script src="js/main.js?v=v9"></script>
 
 </body>
 
