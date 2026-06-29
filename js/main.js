@@ -1136,7 +1136,7 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      transition: none;
       opacity: 0;
       pointer-events: none;
       white-space: nowrap;
@@ -1154,11 +1154,16 @@
     function showToast() {
       if (isToastVisible) return;
       isToastVisible = true;
+
+      // Appear INSTANTLY — no transition
+      toast.style.transition = 'none';
       toast.style.top = '24px';
       toast.style.opacity = '1';
 
       clearTimeout(toastTimeout);
       toastTimeout = setTimeout(() => {
+        // Smooth slide-out when dismissing
+        toast.style.transition = 'top 0.4s ease, opacity 0.4s ease';
         toast.style.top = '-80px';
         toast.style.opacity = '0';
         isToastVisible = false;
@@ -1166,12 +1171,16 @@
     }
 
     function hideAvatar() {
+      // Instant overlay — no transition delay
+      avatarOverlay.style.transition = 'none';
       avatarOverlay.style.opacity = '1';
       avatarOverlay.style.pointerEvents = 'all';
       showToast();
     }
 
     function showAvatar() {
+      // Smooth fade-back when restoring
+      avatarOverlay.style.transition = 'opacity 0.3s ease';
       avatarOverlay.style.opacity = '0';
       avatarOverlay.style.pointerEvents = 'none';
     }
