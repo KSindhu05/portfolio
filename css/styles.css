@@ -118,26 +118,15 @@ a {
 img {
   max-width: 100%;
   display: block;
+}
+
+/* Protect only the profile avatar */
+.hero-avatar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
-}
-
-/* Re-enable pointer events for images inside clickable containers */
-a img,
-button img,
-.cert-image-preview img,
-.cert-modal-body img {
-  pointer-events: auto;
-}
-
-/* Ensure form inputs remain selectable */
-input,
-textarea {
-  -webkit-user-select: auto;
-  user-select: auto;
 }
 
 ul,

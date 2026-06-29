@@ -1026,252 +1026,152 @@
   }
 
   /* Certificate viewer functionality has been moved to a self-contained inline script in index.html for maximum reliability and to bypass cache/init issues. */
-  /* ===== SCREENSHOT PROTECTION (Desktop + Mobile) ===== */
+  /* ===== PROFILE PICTURE PROTECTION (Avatar Only) ===== */
   function initScreenshotProtection() {
-    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const avatarContainer = document.querySelector('.hero-avatar-container');
+    const avatarImg = document.querySelector('.hero-avatar');
+    if (!avatarContainer || !avatarImg) return;
 
-    // ---- Protection Overlay (reactive — for desktop + fallback) ----
-    const overlay = document.createElement('div');
-    overlay.id = 'screenshot-overlay';
-    overlay.style.cssText = `
-      position: fixed;
+    // ---- 1. Render profile pic on a Canvas (harder to save/inspect) ----
+    function replaceWithCanvas() {
+      const canvas = document.createElement('canvas');
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = avatarImg.src;
+
+      img.onload = function () {
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        // Copy all classes and styles from original img
+        canvas.className = avatarImg.className;
+        canvas.setAttribute('role', 'img');
+        canvas.setAttribute('aria-label', avatarImg.alt || 'Profile Picture');
+        canvas.style.cssText = avatarImg.style.cssText;
+        canvas.draggable = false;
+
+        // Prevent any interaction on the canvas
+        canvas.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
+        canvas.addEventListener('dragstart', (e) => { e.preventDefault(); });
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); }, { passive: false });
+
+        avatarImg.replaceWith(canvas);
+      };
+    }
+    replaceWithCanvas();
+
+    // ---- 2. Transparent shield over the avatar container ----
+    const shield = document.createElement('div');
+    shield.style.cssText = `
+      position: absolute;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background-color: #0B1120;
-      color: #38bdf8;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.05s ease;
-      font-family: 'Space Grotesk', sans-serif;
-      text-align: center;
-      padding: 20px;
+      width: 100%; height: 100%;
+      z-index: 10;
+      background: transparent;
+      pointer-events: auto;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
     `;
-    
-    overlay.innerHTML = `
-      <i class="fas fa-shield-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-      <h2 style="font-size: 1.6rem; margin: 0;">Screenshots Restricted</h2>
-      <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 0.5rem;">Capturing this profile is disabled for privacy.</p>
-    `;
-    document.body.appendChild(overlay);
+    shield.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
+    shield.addEventListener('dragstart', (e) => { e.preventDefault(); });
 
-    let isHidden = false;
-    let restoreTimeout;
-
-    function hideScreen() {
-      if (isHidden) return;
-      isHidden = true;
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'all';
+    // Make sure avatar container is positioned for the shield
+    const containerPosition = window.getComputedStyle(avatarContainer).position;
+    if (containerPosition === 'static') {
+      avatarContainer.style.position = 'relative';
     }
+    avatarContainer.appendChild(shield);
 
-    function restoreScreen() {
-      if (!isHidden) return;
-      isHidden = false;
-      overlay.style.opacity = '0';
-      overlay.style.pointerEvents = 'none';
-    }
-
-    // ========================================
-    // PROACTIVE MOBILE PROTECTION (DRM-style)
-    // ========================================
-    // On mobile, screenshots happen at the OS level BEFORE JS can react.
-    // These techniques make captured content appear black/protected.
-
-    if (isMobile) {
-
-      // TECHNIQUE 1: Secure Canvas Overlay
-      // Android Chrome treats hardware-accelerated canvas as a "secure surface"
-      // — screenshots of this layer render as black on many devices.
-      const secureCanvas = document.createElement('canvas');
-      secureCanvas.id = 'secure-canvas-overlay';
-      secureCanvas.width = 1;
-      secureCanvas.height = 1;
-      secureCanvas.style.cssText = `
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        z-index: 999998;
-        pointer-events: none;
-        opacity: 0.002;
-        mix-blend-mode: overlay;
-      `;
-      document.body.appendChild(secureCanvas);
-
-      // Draw to activate compositing layer
-      const ctx = secureCanvas.getContext('2d', { willReadFrequently: false });
-      if (ctx) {
-        ctx.fillStyle = 'rgba(0,0,0,0.01)';
-        ctx.fillRect(0, 0, 1, 1);
-      }
-
-      // TECHNIQUE 2: CSS compositor protection layer
-      const protectionLayer = document.createElement('div');
-      protectionLayer.id = 'mobile-protection-layer';
-      protectionLayer.style.cssText = `
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        z-index: 999997;
-        pointer-events: none;
-        background: transparent;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        will-change: transform;
-      `;
-      document.body.appendChild(protectionLayer);
-
-      // TECHNIQUE 3: Continuous micro-animation forces secure compositor path
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes secure-pulse {
-          0%, 100% { opacity: 0.001; }
-          50% { opacity: 0.003; }
-        }
-        #secure-canvas-overlay {
-          animation: secure-pulse 2s ease-in-out infinite;
-        }
-        #mobile-protection-layer::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
-          background: linear-gradient(135deg, rgba(0,0,0,0.003) 0%, transparent 100%);
-          animation: secure-pulse 3s ease-in-out infinite;
-          -webkit-transform: translateZ(0);
-          transform: translateZ(0);
-        }
-      `;
-      document.head.appendChild(style);
-
-      // TECHNIQUE 4: iOS screenshot detection
-      let lastWidth = window.innerWidth;
-      let lastHeight = window.innerHeight;
-      let touchActive = false;
-
-      document.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
-      document.addEventListener('touchend', () => { 
-        setTimeout(() => { touchActive = false; }, 300);
-      }, { passive: true });
-
-      // Detect resize events that aren't from orientation changes
-      window.addEventListener('resize', () => {
-        const newW = window.innerWidth;
-        const newH = window.innerHeight;
-        if (newW === lastWidth && newH === lastHeight && !touchActive) {
-          hideScreen();
-          clearTimeout(restoreTimeout);
-          restoreTimeout = setTimeout(restoreScreen, 2500);
-        }
-        lastWidth = newW;
-        lastHeight = newH;
-      }, { passive: true });
-
-      // TECHNIQUE 5: Volume button screenshot detection (Android)
-      let lastVisibleTime = Date.now();
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden') {
-          hideScreen();
-          lastVisibleTime = Date.now();
-          clearTimeout(restoreTimeout);
-          restoreTimeout = setTimeout(restoreScreen, 3000);
-        } else {
-          const hiddenDuration = Date.now() - lastVisibleTime;
-          // Hidden < 2s = likely screenshot, not a tab switch
-          if (hiddenDuration < 2000) {
-            clearTimeout(restoreTimeout);
-            restoreTimeout = setTimeout(restoreScreen, 2000);
-          } else {
-            restoreScreen();
-          }
-        }
-      });
-
-    } else {
-      // Desktop-only: Page Visibility API
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden') {
-          hideScreen();
-          clearTimeout(restoreTimeout);
-          restoreTimeout = setTimeout(restoreScreen, 3000);
-        }
-      });
-    }
-
-    // ========================================
-    // CONTENT PROTECTION (both mobile + desktop)
-    // ========================================
-
-    // Prevent long-press context menu
-    document.addEventListener('contextmenu', (e) => {
+    // ---- 3. Block right-click only on avatar area (not whole page) ----
+    avatarContainer.addEventListener('contextmenu', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       return false;
     });
 
-    // Block image saving
-    document.querySelectorAll('img').forEach((img) => {
-      img.setAttribute('draggable', 'false');
-      img.style.webkitTouchCallout = 'none';
-      img.style.webkitUserSelect = 'none';
-      img.style.userSelect = 'none';
-      img.style.pointerEvents = 'none';
-    });
+    // ---- 4. Avatar-only overlay for screenshot attempts ----
+    const avatarOverlay = document.createElement('div');
+    avatarOverlay.style.cssText = `
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(11, 17, 32, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      border-radius: inherit;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #38bdf8;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 10px;
+    `;
+    avatarOverlay.innerHTML = '<i class="fas fa-shield-alt" style="font-size:1.2rem;margin-right:6px;"></i> Protected';
+    avatarContainer.appendChild(avatarOverlay);
 
-    // Disable text selection (keep form inputs usable)
-    document.body.style.webkitUserSelect = 'none';
-    document.body.style.userSelect = 'none';
-    document.querySelectorAll('input, textarea').forEach((el) => {
-      el.style.webkitUserSelect = 'auto';
-      el.style.userSelect = 'auto';
-    });
+    let restoreTimeout;
 
-    // ========================================
-    // DESKTOP PROTECTIONS
-    // ========================================
+    function hideAvatar() {
+      avatarOverlay.style.opacity = '1';
+      avatarOverlay.style.pointerEvents = 'all';
+    }
 
-    // Intercept PrintScreen / Snipping tool
+    function showAvatar() {
+      avatarOverlay.style.opacity = '0';
+      avatarOverlay.style.pointerEvents = 'none';
+    }
+
+    // ---- 5. Desktop: PrintScreen / snipping tool ----
     document.addEventListener('keydown', (e) => {
       if (e.key === 'PrintScreen') {
-        hideScreen();
-        let attempts = 0;
-        const wipeInterval = setInterval(() => {
-          try { navigator.clipboard.writeText('Screenshots of this profile are disabled for privacy.'); } catch(err) {}
-          attempts++;
-          if (attempts > 15) clearInterval(wipeInterval);
-        }, 50);
+        hideAvatar();
         clearTimeout(restoreTimeout);
-        restoreTimeout = setTimeout(restoreScreen, 3000);
+        restoreTimeout = setTimeout(showAvatar, 3000);
       }
+      // Cmd+Shift (Mac screenshot) or Ctrl+P (print)
       if ((e.metaKey && e.shiftKey) || (e.ctrlKey && e.key === 'p')) {
-        hideScreen();
+        hideAvatar();
         clearTimeout(restoreTimeout);
-        restoreTimeout = setTimeout(restoreScreen, 3000);
+        restoreTimeout = setTimeout(showAvatar, 3000);
       }
     });
 
-    document.addEventListener('keyup', (e) => {
-       if (e.key === 'PrintScreen') {
-         try { navigator.clipboard.writeText('Screenshots of this profile are disabled for privacy.'); } catch(err) {}
-       }
-    });
+    // ---- 6. Print protection (avatar only) ----
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+      @media print {
+        .hero-avatar-container {
+          visibility: hidden !important;
+        }
+        .hero-avatar-container::after {
+          content: 'Profile picture protected';
+          visibility: visible;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          color: #94a3b8;
+          font-family: 'Space Grotesk', sans-serif;
+        }
+      }
+    `;
+    document.head.appendChild(printStyle);
 
-    // Window blur/focus
-    window.addEventListener('blur', () => {
-      hideScreen();
-      clearTimeout(restoreTimeout);
-      restoreTimeout = setTimeout(restoreScreen, 3000);
+    // ---- 7. Disable image drag/save for any remaining images ----
+    document.querySelectorAll('.hero-avatar-container img, .hero-avatar-container canvas').forEach((el) => {
+      el.setAttribute('draggable', 'false');
+      el.style.webkitTouchCallout = 'none';
+      el.style.webkitUserSelect = 'none';
+      el.style.userSelect = 'none';
     });
-    window.addEventListener('focus', restoreScreen);
-
-    // Print protection
-    window.addEventListener('beforeprint', hideScreen);
-    window.addEventListener('afterprint', restoreScreen);
   }
 
 
